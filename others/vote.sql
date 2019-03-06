@@ -14,7 +14,7 @@ CREATE TABLE `vt_option` (
 
 CREATE TABLE `vt_question` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `question_id` char(8) NOT NULL DEFAULT '' COMMENT '问卷key',
+  `question_id` char(8) NOT NULL DEFAULT '' COMMENT '问卷id',
   `page_cut` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否分页',
   `title` varchar(64) NOT NULL DEFAULT '' COMMENT '问卷标题',
   `description` text NOT NULL COMMENT '问卷描述',
@@ -30,7 +30,7 @@ CREATE TABLE `vt_question` (
 
 CREATE TABLE `vt_answer_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `qustion_id` char(8) NOT NULL DEFAULT '' COMMENT '答卷id',
+  `qustion_id` char(8) NOT NULL DEFAULT '' COMMENT '问卷id',
   `content` text NOT NULL COMMENT '答案结果',
   `token` varchar(32) NOT NULL DEFAULT '' COMMENT '答题客户端标识',
   `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答题用户id',
