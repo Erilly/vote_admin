@@ -1,0 +1,48 @@
+{
+  //矩阵填空
+  "5c7e3d4f92beb52c30fe14e5": {
+    "5c7e3d4f92beb52c30fe14e8": {
+      "5c7e3d4f92beb52c30fe14e6": "矩阵1*填空1",
+      "5c7e3d4f92beb52c30fe14e7": "矩阵1*填空2",
+      "5c7f70d892beb52f0c619f87": "矩阵1*填空3"
+    },
+    "5c7e3d4f92beb52c30fe14e9": {
+      "5c7e3d4f92beb52c30fe14e6": "矩阵2*填空1",
+      "5c7e3d4f92beb52c30fe14e7": "矩阵2*填空2",
+      "5c7f70d892beb52f0c619f87": "矩阵3*填空3"
+    }
+  },
+  //矩阵打分
+  "5c7e3d5b92beb52d8cb9d3d1": {
+    "5c7e3d5c92beb52d8cb9d3d4": {
+      "5c7e3d5c92beb52d8cb9d3d2": "3",
+      "5c7e3d5c92beb52d8cb9d3d3": "2"
+    },
+    "5c7e3d5c92beb52d8cb9d3d5": {
+      "5c7e3d5c92beb52d8cb9d3d2": "5",
+      "5c7e3d5c92beb52d8cb9d3d3": "1"
+    }
+  },
+  //打分
+  "5c7e3d7892beb52abdac5397": {
+    "5c7e3d7892beb52abdac5398": [
+      "5"
+    ]
+  },
+  //多选
+  "5c7f79c992beb52c6a569c8b": [
+    [
+      "5c7f79c992beb52c6a569c8c"
+    ],
+    [
+      "5c7f79c992beb52c6a569c8d"
+    ],
+    [
+      "5c7f79cc92beb52eddc453eb"
+    ]
+  ],
+  //单选
+  "5c7f81c83631f2b55139264b": [
+    "5c7f81c83631f2b55139264d"
+  ]
+}
