@@ -1,30 +1,3 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 4541
-#
-# http://www.sequelpro.com/
-# https://github.com/sequelpro/sequelpro
-#
-# Host: 127.0.0.1 (MySQL 5.6.41)
-# Database: vote
-# Generation Time: 2019-03-06 08:14:02 +0000
-# ************************************************************
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
-# Dump of table vt_option
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `vt_option`;
-
 CREATE TABLE `vt_option` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `selector_id` char(32) NOT NULL DEFAULT '' COMMENT '问题id',
@@ -39,11 +12,6 @@ CREATE TABLE `vt_option` (
 
 
 
-# Dump of table vt_question
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `vt_question`;
-
 CREATE TABLE `vt_question` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` char(8) NOT NULL DEFAULT '' COMMENT '问卷key',
@@ -51,17 +19,14 @@ CREATE TABLE `vt_question` (
   `title` varchar(64) NOT NULL DEFAULT '' COMMENT '问卷标题',
   `description` text NOT NULL COMMENT '问卷描述',
   `usertoken` varchar(32) NOT NULL COMMENT '所属用户',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态：0正常 1删除',
+  `publish_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '发布状态：0上线 1下线',
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问卷';
 
 
-
-# Dump of table vt_answer_log
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `vt_answer_log`;
 
 CREATE TABLE `vt_answer_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -75,12 +40,6 @@ CREATE TABLE `vt_answer_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回答结果';
 
 
-
-# Dump of table vt_selector
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `vt_selector`;
-
 CREATE TABLE `vt_selector` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` char(8) NOT NULL DEFAULT '' COMMENT '问卷id',
@@ -92,13 +51,3 @@ CREATE TABLE `vt_selector` (
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='问题';
-
-
-
-
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
