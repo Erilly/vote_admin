@@ -1,17 +1,17 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
+	"fmt"
 )
 
 type MainController struct {
-	beego.Controller
+	BaseController
 }
 
 func (this *MainController) Get() {
-	//this.Ctx.WriteString( beego.AppConfig.String("mysqluser") + "test ini" )
 	this.Data["Website"] = "beego.me"
 	this.Data["Email"] = "astaxie@gmail.com"
+	this.Data["username"] = fmt.Sprint(this.GetSession(SESSION_USER_KEY))
 
 	this.TplName = "index.tpl"
 }
