@@ -13,7 +13,9 @@ func (this *AdminController) Get() {
 	//this.Data["Website"] = "beego.me"
 	//this.Data["Email"] = "astaxie@gmail.com"
 
+	this.Data["isVote"] = true
+	this.Data["isVoteList"] = true
 
 	this.Layout = "admin/layout/main.html"
-	this.TplName = "admin/vote/index.html"
+	this.TplName = "admin/vote/list.html"
 }

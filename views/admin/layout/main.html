@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	  
-    <title>Gentelella Alela! | </title>
+    <title>Vote admin </title>
 
     <!-- Bootstrap -->
     <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,12 +61,13 @@
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>General</h3>
-                <ul class="nav side-menu">
-                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="index.html">Dashboard</a></li>
-                      <li><a href="index2.html">Dashboard2</a></li>
-                      <li><a href="index3.html">Dashboard3</a></li>
+                <ul class="nav side-menu" >
+                  <li {{if .isVote}}class="avtive"{{end}}>
+                      <a><i class="fa fa-home"></i> Vote <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display:{{if .isVote}}block{{else}}none{{end}}">
+                        <li {{if .isVoteList}}class="current-page"{{end}}><a href="/list">List</a></li>
+                        <li {{if .isVoteList}}class="current-page"{{end}}><a href="/list">List</a></li>
+                        <li {{if .isVoteList}}class="current-page"{{end}}><a href="/list">List</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
