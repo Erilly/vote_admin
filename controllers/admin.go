@@ -13,6 +13,7 @@ func (this *AdminController) Get() {
 	//this.Data["Website"] = "beego.me"
 	//this.Data["Email"] = "astaxie@gmail.com"
 
+
 	this.Layout = "admin/layout/main.html"
 	this.TplName = "admin/vote/index.html"
 }
