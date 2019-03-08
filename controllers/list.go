@@ -50,8 +50,7 @@ func (this *ListController) Create() {
 
 func (this *ListController) Edit(){
 
-	//this.Data["question"],_ = models.GetQuestion(this.Ctx.Input.Param("0"))
-	this.Data["question"],_ = models.GetQuestion("1b9fdeb7")
+	this.Data["question"],_ = models.GetQuestion(this.Ctx.Input.Param("0"))
 	this.TplName = "admin/vote/create.html"
 
 }
