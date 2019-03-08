@@ -44,7 +44,7 @@ func (this *ListController) Create() {
 
 	_,question_id:=models.AddQuestion(title,description)
 
-	this.Redirect("/list/edit/"+question_id,301)
+	this.Redirect("/list/edit/"+question_id,302)
 	return
 }
 
