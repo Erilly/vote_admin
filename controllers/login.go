@@ -11,7 +11,7 @@ type LoginController struct {
 func (this *LoginController) Get() {
 	isExit:= this.Input().Get("exit") == "true"
 	if isExit{
-		this.DelSession(SESSION_USER_KEY)
+		this.DestroySession()
 	}
 	this.TplName = "admin/vote/login.html"
 }
@@ -25,7 +25,7 @@ func (this *LoginController) Post() {
 		beego.AppConfig.String("adminpass") == password{
 
 		this.SetSession(SESSION_USER_KEY,username)
-		this.Redirect("/admin",301)
+		this.Redirect("/list",302)
 	}
 	this.TplName = "admin/vote/login.html"
 }
