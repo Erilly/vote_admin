@@ -53,10 +53,19 @@
                                 <td>{{.Id}}</td>
                                 <td>{{.QuestionId}}</td>
                                 <td>{{.Title}}</td>
-                                <td>{{.PublishStatus}}</td>
+                                <td>
+                                    {{if eq .PublishStatus 0}}
+                                        <span style="color:red">未发布</span>
+                                    {{else}}
+                                        <span style="color:limegreen">已发布</span>
+                                    {{end}}
+                                </td>
                                 <td>{{.PublishStatus}}</td>
                                 <td>{{.Mtime}}</td>
-                                <td></td>
+                                <td>
+                                    <a href="/list/edit/{{.QuestionId}}">编辑</a>
+                                    <a href="/list/publish/{{.QuestionId}}">发布</a>
+                                </td>
                             {{end}}
                             </tbody>
                         </table>

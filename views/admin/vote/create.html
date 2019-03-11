@@ -21,30 +21,29 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <p>双击添加</p>
-                        <a class="btn btn-app">
+                        <a class="btn btn-app create-selector-template" selector-type="1">
                             <i class="fa fa-circle-o"></i> 单选
                         </a>
-                        <a class="btn btn-app">
+                        <a class="btn btn-app create-selector-template" selector-type="2">
                             <i class="fa fa-check-square-o"></i> 多选
                         </a>
-                        <a class="btn btn-app">
-                            <i class="fa fa-square-o"></i> 填空
-                        </a>
-                        <a class="btn btn-app">
-                            <i class="fa fa-th-large"></i> 矩阵填空
-                        </a>
-                        <a class="btn btn-app">
+                        <a class="btn btn-app create-selector-template" selector-type="3">
                             <i class="fa fa-star-o"></i> 打分
                         </a>
-                        <a class="btn btn-app">
+                        <a class="btn btn-app create-selector-template" selector-type="4">
                             <i class="fa fa-th"></i> 矩阵打分
                         </a>
-
+                        <a class="btn btn-app create-selector-template" selector-type="5">
+                            <i class="fa fa-square-o"></i> 填空
+                        </a>
+                        <a class="btn btn-app create-selector-template" selector-type="6">
+                            <i class="fa fa-th-large"></i> 矩阵填空
+                        </a>
                     </div>
                 </div>
 
             </div>
-            <div class="col-md-10 col-xs-12 pull-left">
+            <div class="col-md-10 col-xs-12 pull-left" id="question-container">
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="form-horizontal form-label-left">
@@ -67,8 +66,63 @@
                         </div>
                     </div>
                 </div>
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>单选：</h2>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            </div>
+                        </div>
+                        <ul class="nav navbar-right panel_toolbox" style="min-width:0px;">
+                            <li><i class="fa fa-close"></i></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                    <div class="iradio_flat-green disabled" style="position: relative;"><input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                    <div class="iradio_flat-green disabled" style="position: relative;"><input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
+<script>
+    $(".create-selector-template").bind("dblclick",function(){
+        createSelector($(this).attr("selector-type"));
+    });
+    function createSelector(_type) {
+        _reqUrl = "/selector";
+        $.ajax({
+            url:_reqUrl,
+            dataType:"json",
+            type:"get",
+            data:{type:_type},
+            success:function (jsondata) {
+                if(jsondata.Code==0) {
+                    $("#question-container").append(jsondata.Content)
+                }else{
+                    alert(jsondata.Msg)
+                }
+            }
+        })
+    }
+</script>
