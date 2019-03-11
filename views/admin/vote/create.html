@@ -7,7 +7,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="row">
-            <div class="col-md-2 pull-right">
+            <div class="col-md-3 pull-right">
                 <div class="x_panel">
                     <div class="x_content">
                         <a class="btn btn-success">
@@ -43,14 +43,14 @@
                 </div>
 
             </div>
-            <div class="col-md-10 col-xs-12 pull-left" id="question-container">
+            <div class="col-md-9 col-xs-12 pull-left" id="question-container">
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="form-horizontal form-label-left">
-                            <input type="hidden" class="form-control" name="question_id" value="{{.question.QuestionId}}">
+                            <input type="hidden" class="form-control" id="question_id" value="{{.question.QuestionId}}">
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><span class="required"></span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-10" for="first-name"><span class="required"></span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input type="text" class="form-control" name="title" value="{{.question.Title}}" placeholder="问卷标题">
@@ -60,7 +60,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"> <span class="required"></span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" class="form-control" name="description" value="{{.question.Description}}" placeholder="描述">
+                                    <textarea class="form-control" rows="3" placeholder="rows=&quot;3&quot;">{{.question.Description}}"</textarea>
                                 </div>
                             </div>
                         </div>
@@ -111,11 +111,12 @@
     });
     function createSelector(_type) {
         _reqUrl = "/selector";
+        _questionId = $("#question_id").val();
         $.ajax({
             url:_reqUrl,
             dataType:"json",
-            type:"get",
-            data:{type:_type},
+            type:"post",
+            data:{template_type:_type,question_id:_questionId},
             success:function (jsondata) {
                 if(jsondata.Code==0) {
                     $("#question-container").append(jsondata.Content)

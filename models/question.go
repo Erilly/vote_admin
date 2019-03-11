@@ -1,9 +1,8 @@
 package models
 
 import (
-	"time"
 	"github.com/astaxie/beego/orm"
-	"strconv"
+	"time"
 )
 
 
@@ -26,7 +25,7 @@ func GetQuestionInfo(questionID string)(*Question,error){
 
 func AddQuestion(title,content string) (int64,string){
 	now:=time.Now()
-	token:=getMd5Token(strconv.FormatInt(time.Now().UTC().UnixNano(), 10),8)
+	token:=getMd5Token(8,"")
 
 	o := orm.NewOrm()
 

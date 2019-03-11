@@ -4,14 +4,6 @@ import "github.com/astaxie/beego"
 
 const (
 	SESSION_USER_KEY = "SESSION_USER_KEY"
-
-	//题型
-	SINGLE_SELECTOTR = 1
-	MULTI_SELECTOTR = 2
-	SCORE_SELECTOTR = 3
-	SCORE_MATRIX_SELECTOTR = 4
-	FILL_SELECTOTR = 5
-	FILL_MATRIX_SELECTOTR = 6
 )
 
 type BaseController struct {

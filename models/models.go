@@ -1,6 +1,7 @@
 package models
 
 import (
+	"strconv"
 	"time"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego"
@@ -9,6 +10,15 @@ import (
 	"encoding/hex"
 )
 
+const (
+	//题型
+	SINGLE_SELECTOTR = 1
+	MULTI_SELECTOTR = 2
+	SCORE_SELECTOTR = 3
+	SCORE_MATRIX_SELECTOTR = 4
+	FILL_SELECTOTR = 5
+	FILL_MATRIX_SELECTOTR = 6
+)
 
 type Question struct {
 	Id uint
@@ -27,7 +37,7 @@ type Question struct {
 type Selector struct{
 	Id uint
 	QuestionId string `orm:"index;type(char);size(8)" description:(问卷ID)`
-	SelectorId string `orm:"index;type(char);size(32)" description:(问题ID)`
+	SelectorId string `orm:"index;type(char);size(16)" description:(问题ID)`
 	Title string `orm:"size(255)" description:(问卷标题)`
 	TemplateType int8 `orm:"default(1)" description:(模板类型)`
 	Page int16 `orm:"default(1)" description:(模板类型)`
@@ -37,8 +47,8 @@ type Selector struct{
 
 type Option struct{
 	Id uint
-	SelectorId string `orm:"index;type(char);size(32)" description:(问题ID)`
-	OptionId string `orm:"index;type(char);size(32)" description:(选项ID)`
+	SelectorId string `orm:"index;type(char);size(16)" description:(问题ID)`
+	OptionId string `orm:"index;type(char);size(16)" description:(选项ID)`
 	Title string `orm:"size(255)" description:(问卷标题)`
 	Pid uint `orm:"default(0)" description:(父级id)`
 	Status int8 `orm:"default(0)" description:(状态：0正常 1删除)`
@@ -93,7 +103,11 @@ func RegisterDB() {
 /*
 	获取加密参数
  */
-func getMd5Token(s string, l int) string{
+func getMd5Token(l int,s string) string{
+
+	if s=="" {
+		s = strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
+	}
 	h := md5.New()
 	h.Write([]byte(s))
 	token:=hex.EncodeToString(h.Sum(nil))
