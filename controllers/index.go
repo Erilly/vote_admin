@@ -1,19 +1,7 @@
 package controllers
 
-import "github.com/astaxie/beego"
-
 type IndexController struct {
-	beego.Controller
-}
-
-func (this *IndexController) Prepare(){
-	logininfo:=this.GetSession(SESSION_USER_KEY)
-
-	if logininfo==nil{
-		this.Redirect("/login",302)
-	}else{
-		this.Data["logininfo"] = logininfo
-	}
+	BaseController
 }
 
 func (this *IndexController) Get() {

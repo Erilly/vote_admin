@@ -2,26 +2,10 @@ package controllers
 
 import (
 	"vote_admin/models"
-	"github.com/astaxie/beego"
 )
 
 type ListController struct {
-	beego.Controller
-}
-
-func (this *ListController) Prepare(){
-	logininfo:=this.GetSession(SESSION_USER_KEY)
-
-	if logininfo==nil{
-		this.Redirect("/login",302)
-	}else{
-		this.Data["logininfo"] = logininfo
-	}
-
-	this.Data["isVote"] = true
-	this.Data["isVoteList"] = true
-	this.Data["logininfo"] = this.GetSession(SESSION_USER_KEY)
-	this.Layout = "admin/layout/main.html"
+	BaseController
 }
 
 func (this *ListController) Get() {
@@ -50,7 +34,7 @@ func (this *ListController) Create() {
 
 func (this *ListController) Edit(){
 
-	this.Data["question"],_ = models.GetQuestion(this.Ctx.Input.Param("0"))
+	this.Data["question"],_ = models.GetQuestionInfo(this.Ctx.Input.Param("0"))
 	this.TplName = "admin/vote/create.html"
 
 }
