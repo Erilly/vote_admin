@@ -21,22 +21,22 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <p>双击添加</p>
-                        <a class="btn btn-app create-selector-template" selector-type="1">
+                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(1)">
                             <i class="fa fa-circle-o"></i> 单选
                         </a>
-                        <a class="btn btn-app create-selector-template" selector-type="2">
+                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(2)">
                             <i class="fa fa-check-square-o"></i> 多选
                         </a>
-                        <a class="btn btn-app create-selector-template" selector-type="3">
+                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(3)">
                             <i class="fa fa-star-o"></i> 打分
                         </a>
-                        <a class="btn btn-app create-selector-template" selector-type="4">
+                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(4)">
                             <i class="fa fa-th"></i> 矩阵打分
                         </a>
-                        <a class="btn btn-app create-selector-template" selector-type="5">
+                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(5)">
                             <i class="fa fa-square-o"></i> 填空
                         </a>
-                        <a class="btn btn-app create-selector-template" selector-type="6">
+                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(6)">
                             <i class="fa fa-th-large"></i> 矩阵填空
                         </a>
                     </div>
@@ -60,7 +60,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"> <span class="required"></span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea class="form-control" rows="3" placeholder="rows=&quot;3&quot;">{{.question.Description}}"</textarea>
+                                    <textarea class="form-control" rows="3">{{.question.Description}}"</textarea>
                                 </div>
                             </div>
                         </div>
@@ -72,9 +72,11 @@
     </div>
 </div>
 <script>
-    $(".create-selector-template").bind("dblclick",function(){
-        createSelector($(this).attr("selector-type"));
-    });
+    /**
+     * 新建题目
+     * @param _type
+     * @returns {boolean}
+     */
     function createSelector(_type) {
         _reqUrl = "/selector";
         _questionId = $("#question_id").val();
@@ -90,8 +92,10 @@
                     alert(jsondata.Msg)
                 }
             }
-        })
+        });
+        return true;
     }
+
     var singleOption = '<div class="form-group">'+
         '<label class="control-label col-md-1 col-sm-3 col-xs-12">'+
         '<div class="iradio_flat-green disabled" style="position: relative;">' +
@@ -103,12 +107,19 @@
         '<input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" value="选项标题">' +
         '</div>' +
         '<div class="col-md-1 col-sm-6 col-xs-12">' +
-        '<span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="addOption($(this),1,0)"></span>' +
-        '<span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;" onclick="addOption($(this),1,1)"></span>' +
+        '<span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),1,0)"></span>' +
+        '<span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;" onclick="manageOption($(this),1,1)"></span>' +
         '</div>' +
         '</div>';
 
-    function addOption(thisDom,type,control){
+    /**
+     * 管理选项
+     * @param thisDom
+     * @param type
+     * @param control
+     * @returns {boolean}
+     */
+    function manageOption(thisDom,type,control){
         switch(type){
             case 1:
                 var parentsDom = thisDom.parents('.form-horizontal');
@@ -130,7 +141,6 @@
                 parentsDom.children('.form-group:last-child').find('.glyphicon-plus').show();
                 parentsDom.children('.form-group:last-child').find('.glyphicon-minus').hide();
                 break;
-
         }
     }
 </script>
