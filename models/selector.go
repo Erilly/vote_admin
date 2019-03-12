@@ -54,14 +54,14 @@ func selectorTemplate(selector_id string,template_type int8)([]Option){
 			Option{
 				SelectorId: selector_id,
 				OptionId:   getMd5Token(16, ""),
-				Title:      "选项1",
+				Title:      "选项标题",
 				Ctime:      time.Now(),
 				Mtime:      time.Now(),
 			},
 			Option{
 				SelectorId: selector_id,
 				OptionId:   getMd5Token(16, ""),
-				Title:      "选项2",
+				Title:      "选项标题",
 				Ctime:      time.Now(),
 				Mtime:      time.Now(),
 			},
@@ -71,14 +71,14 @@ func selectorTemplate(selector_id string,template_type int8)([]Option){
 			Option{
 				SelectorId: selector_id,
 				OptionId:   getMd5Token(16, ""),
-				Title:      "选项1",
+				Title:      "选项标题",
 				Ctime:      time.Now(),
 				Mtime:      time.Now(),
 			},
 			Option{
 				SelectorId: selector_id,
 				OptionId:   getMd5Token(16, ""),
-				Title:      "选项2",
+				Title:      "选项标题",
 				Ctime:      time.Now(),
 				Mtime:      time.Now(),
 			},
@@ -88,7 +88,7 @@ func selectorTemplate(selector_id string,template_type int8)([]Option){
 			Option{
 				SelectorId: selector_id,
 				OptionId:   getMd5Token(16, ""),
-				Title:      "选项1",
+				Title:      "选项标题",
 				Ctime:      time.Now(),
 				Mtime:      time.Now(),
 			},
@@ -99,7 +99,7 @@ func selectorTemplate(selector_id string,template_type int8)([]Option){
 			Option{
 				SelectorId: selector_id,
 				OptionId:   getMd5Token(16, ""),
-				Title:      "选项1",
+				Title:      "选项标题",
 				Ctime:      time.Now(),
 				Mtime:      time.Now(),
 			},
