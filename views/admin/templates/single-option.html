@@ -1,0 +1,17 @@
+
+
+<div class="form-group" attr="{{.Id}}">
+    <label class="control-label col-md-1 col-sm-3 col-xs-12">
+        <div class="iradio_flat-green disabled" style="position: relative;">
+            <input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;">
+            <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+        </div>
+    </label>
+    <div class="col-md-5 col-sm-6 col-xs-12">
+        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" value="{{.Title}}">
+    </div>
+    <div class="col-md-1 col-sm-6 col-xs-12">
+        <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),1,0)"></span>
+        <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;" onclick="manageOption($(this),1,1)"></span>
+    </div>
+</div>

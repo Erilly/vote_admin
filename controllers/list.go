@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"strconv"
 	"vote_admin/models"
 )
 
@@ -26,16 +27,15 @@ func (this *ListController) Create() {
 	title:="问卷标题"
 	description:="感谢您能抽出几分钟时间来参加本次答题，现在我们就马上开始吧！"
 
-	_,question_id:=models.AddQuestion(title,description)
+	question_id,_:=models.AddQuestion(title,description)
 
-	this.Redirect("/list/edit/"+question_id,302)
+	this.Redirect("/list/edit/"+strconv.Itoa(int(question_id)),302)
 	return
 }
 
 func (this *ListController) Edit(){
 
-
-	this.Data["question"],_ = models.GetQuestionInfo(this.Ctx.Input.Param("0"))
+	this.Data["question"] = models.GetQuestionInfo(this.Ctx.Input.Param("0"))
 	this.TplName = "admin/vote/create.html"
 
 }

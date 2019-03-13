@@ -22,40 +22,38 @@ const (
 
 type Question struct {
 	Id uint
-	QuestionId string `orm:"index;type(char);size(8)" description:(问卷ID)`
-	PageCut int8 `orm:"default(0)" description:(状态 0不分页 1分页)`
-	Title string `orm:"size(255)" description:(问卷标题)`
-	Description string `orm:"type(text)" description:(问卷描述)`
-	Usertoken string `orm:"index;type(char);size(32)" description:(用户Token)`
-	Status int8 `orm:"default(0)" description:(状态：0正常 1删除)`
-	PublishStatus int8 `orm:"default(0)" description:(发布状态：0上线 1下线)`
-	Ctime time.Time `orm:"auto_now_add;type(datetime)" description:(创建时间)`
-	Mtime time.Time `orm:"auto_now;type(datetime)" description:(更新时间)`
+	PageCut int8 `orm:"default(0)" description:"状态 0不分页 1分页"`
+	Title string `orm:"size(255)" description:"问卷标题"`
+	Description string `orm:"type(text)" description:"问卷描述"`
+	Usertoken string `orm:"index;type(char);size(32)" description:"用户Token"`
+	Status int8 `orm:"default(0)" description:"状态：0正常 1删除"`
+	PublishStatus int8 `orm:"default(0)" description:"发布状态：0上线 1下线"`
+	Ctime time.Time `orm:"auto_now_add;type(datetime)" description:"创建时间"`
+	Mtime time.Time `orm:"auto_now;type(datetime)" description:"更新时间"`
+	Selector []*Selector `orm:"reverse(many)"`
 }
 
 
 type Selector struct{
 	Id uint
-	QuestionId string `orm:"index;type(char);size(8)" description:(问卷ID)`
-	SelectorId string `orm:"index;type(char);size(16)" description:(问题ID)`
-	Title string `orm:"size(255)" description:(问卷标题)`
-	TemplateType int8 `orm:"default(1)" description:(模板类型)`
-	Page int16 `orm:"default(1)" description:(模板类型)`
-	Ctime time.Time `orm:"auto_now_add;type(datetime)" description:(创建时间)`
-	Mtime time.Time `orm:"auto_now;type(datetime)" description:(更新时间)`
+	Title string `orm:"size(255)" description:"问卷标题"`
+	TemplateType int8 `orm:"default(1)" description:"模板类型"`
+	Page int16 `orm:"default(1)" description:"模板类型"`
+	Ctime time.Time `orm:"auto_now_add;type(datetime)" description:"创建时间"`
+	Mtime time.Time `orm:"auto_now;type(datetime)" description:"更新时间"`
+	Option []*Option `orm:"reverse(many)"`
+	Question  *Question  `orm:"rel(fk)"`
 }
 
 type Option struct{
 	Id uint
-	SelectorId string `orm:"index;type(char);size(16)" description:(问题ID)`
-	OptionId string `orm:"index;type(char);size(16)" description:(选项ID)`
-	Title string `orm:"size(255)" description:(问卷标题)`
-	Pid uint `orm:"default(0)" description:(父级id)`
-	Status int8 `orm:"default(0)" description:(状态：0正常 1删除)`
-	Ctime time.Time `orm:"auto_now_add;type(datetime)" description:(创建时间)`
-	Mtime time.Time `orm:"auto_now;type(datetime)" description:(更新时间)`
+	Title string `orm:"size(255)" description:"问卷标题"`
+	Pid uint `orm:"default(0)" description:"父级id"`
+	Status int8 `orm:"default(0)" description:"状态：0正常 1删除"`
+	Ctime time.Time `orm:"auto_now_add;type(datetime)" description:"创建时间"`
+	Mtime time.Time `orm:"auto_now;type(datetime)" description:"更新时间"`
+	Selector  *Selector  `orm:"rel(fk)"`
 }
-
 
 type AnswerLog struct{
 	Id uint

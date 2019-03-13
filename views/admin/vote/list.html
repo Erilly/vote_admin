@@ -38,7 +38,6 @@
                             <thead>
                             <tr>
                                 <th>id</th>
-                                <th>问卷id</th>
                                 <th>标题</th>
                                 <th>发布状态</th>
                                 <th>收到数据</th>
@@ -51,7 +50,6 @@
                             {{range .questions}}
                             <tr>
                                 <td>{{.Id}}</td>
-                                <td>{{.QuestionId}}</td>
                                 <td>{{.Title}}</td>
                                 <td>
                                     {{if eq .PublishStatus 0}}
@@ -63,8 +61,8 @@
                                 <td>{{.PublishStatus}}</td>
                                 <td>{{.Mtime}}</td>
                                 <td>
-                                    <a href="/list/edit/{{.QuestionId}}">编辑</a>
-                                    <a href="/list/publish/{{.QuestionId}}">发布</a>
+                                    <a href="/list/edit/{{.Id}}">编辑</a>
+                                    <a href="/list/publish/{{.Id}}">发布</a>
                                 </td>
                             {{end}}
                             </tbody>

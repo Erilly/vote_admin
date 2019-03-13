@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/astaxie/beego/orm"
-	"time"
+	"strconv"
 )
 
 
@@ -15,31 +15,24 @@ func GetAllQuestion()([]*Question,error){
 	return questions,err
 }
 
-func GetQuestionInfo(questionID string)(*Question,error){
+func GetQuestionInfo(questionID string)(Question){
 	o := orm.NewOrm()
-	questions := new(Question)
-	qs := o.QueryTable("vt_question")
-	err:=qs.Filter("question_id",questionID).One(questions)
-	return questions,err
+	qid,_:= strconv.Atoi(questionID)
+	questions := Question{Id: uint(qid)}
+	o.Read(&questions)
+
+	return questions
 }
 
-func AddQuestion(title,content string) (int64,string){
-	now:=time.Now()
-	token:=getMd5Token(8,"")
-
+func AddQuestion(title,content string) (uint,error){
 	o := orm.NewOrm()
-
 	question:=&Question{
 		Title:title,
 		Description:content,
-		QuestionId:token,
-		Ctime:now,
-		Mtime:now,
+		PageCut:1,
 	}
 
 	id,err:=o.Insert(question)
-	if err==nil{
 
-	}
-	return id,token
+	return uint(id),err
 }

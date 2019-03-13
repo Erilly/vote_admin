@@ -47,7 +47,7 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <div class="form-horizontal form-label-left">
-                            <input type="hidden" class="form-control" id="question_id" value="{{.question.QuestionId}}">
+                            <input type="hidden" class="form-control" id="question_id" value="{{.question.Id}}">
 
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-10" for="first-name"><span class="required"></span>
@@ -83,7 +83,7 @@
         $.ajax({
             url:_reqUrl,
             dataType:"json",
-            type:"get",
+            type:"post",
             data:{template_type:_type,question_id:_questionId},
             success:function (jsondata) {
                 if(jsondata.Code==0) {
@@ -96,21 +96,7 @@
         return true;
     }
 
-    var singleOption = '<div class="form-group">'+
-        '<label class="control-label col-md-1 col-sm-3 col-xs-12">'+
-        '<div class="iradio_flat-green disabled" style="position: relative;">' +
-        '<input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;">' +
-        '<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>' +
-        '</div>'+
-        '</label>'+
-        '<div class="col-md-5 col-sm-6 col-xs-12">' +
-        '<input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" value="选项标题">' +
-        '</div>' +
-        '<div class="col-md-1 col-sm-6 col-xs-12">' +
-        '<span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),1,0)"></span>' +
-        '<span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;" onclick="manageOption($(this),1,1)"></span>' +
-        '</div>' +
-        '</div>';
+
 
     /**
      * 管理选项

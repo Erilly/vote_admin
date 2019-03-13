@@ -14,7 +14,7 @@ func (this *BaseController) Prepare(){
 	logininfo:=this.GetSession(SESSION_USER_KEY)
 
 	if logininfo==nil{
-		this.Redirect("/login",302)
+		//this.Redirect("/login",302)
 	}else{
 		this.Data["logininfo"] = logininfo
 	}
