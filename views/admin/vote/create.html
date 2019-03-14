@@ -84,6 +84,7 @@
             url:_reqUrl,
             dataType:"json",
             type:"post",
+            async:"false",
             data:{template_type:_type,question_id:_questionId},
             success:function (jsondata) {
                 if(jsondata.Code==0) {
@@ -93,9 +94,31 @@
                 }
             }
         });
-        return true;
     }
 
+    /**
+     * 新建题目
+     * @param _type
+     * @returns {boolean}
+     */
+    function createOption(selector_id,type) {
+        var html = "";
+        $.ajax({
+            url:"/selector/addoption",
+            dataType:"json",
+            type:"post",
+            async:false,
+            data:{template_type:type,selector_id:selector_id},
+            success:function (jsondata) {
+                if(jsondata.Code==0) {
+                    html = jsondata.Content;
+                }else{
+                    alert(jsondata.Msg)
+                }
+            }
+        });
+        return html;
+    }
 
 
     /**
@@ -110,7 +133,9 @@
             case 1:
                 var parentsDom = thisDom.parents('.form-horizontal');
                 if( control === 0) {
-                    parentsDom.append(singleOption);
+                    var selector_id = thisDom.parents('.x_panel').attr('selector-id');
+                    var optionTemplate = createOption(selector_id,type)
+                    parentsDom.append(optionTemplate);
                 }else {
                     if(!confirm('确定删除该选项？')){
                         return false;

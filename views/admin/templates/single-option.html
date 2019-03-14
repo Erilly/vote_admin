@@ -1,6 +1,5 @@
 
-
-<div class="form-group" attr="{{.Id}}">
+<div class="form-group" option-id="{{.option.Id}}">
     <label class="control-label col-md-1 col-sm-3 col-xs-12">
         <div class="iradio_flat-green disabled" style="position: relative;">
             <input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;">
@@ -8,7 +7,7 @@
         </div>
     </label>
     <div class="col-md-5 col-sm-6 col-xs-12">
-        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" value="{{.Title}}">
+        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" value="{{.option.Title}}">
     </div>
     <div class="col-md-1 col-sm-6 col-xs-12">
         <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),1,0)"></span>

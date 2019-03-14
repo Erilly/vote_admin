@@ -34,8 +34,8 @@ func (this *ListController) Create() {
 }
 
 func (this *ListController) Edit(){
-
-	this.Data["question"] = models.GetQuestionInfo(this.Ctx.Input.Param("0"))
+	question_id,_:=strconv.Atoi(this.Ctx.Input.Param("0"))
+	this.Data["question"] = models.GetQuestionInfo(question_id)
 	this.TplName = "admin/vote/create.html"
 
 }

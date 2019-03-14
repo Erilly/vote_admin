@@ -1,113 +1,89 @@
 package models
-//
-//import (
-//	"github.com/astaxie/beego/orm"
-//	"time"
-//)
-//
-//
-//func GetAllSelector()([]*Question,error){
-//	o := orm.NewOrm()
-//	questions := make([]*Question,0)
-//	qs := o.QueryTable("vt_question")
-//	_,err:=qs.OrderBy("-ctime").All(&questions)
-//
-//	return questions,err
-//}
-//
-//func GetSelectorInfo(questionID string)(*Question,error){
-//	o := orm.NewOrm()
-//	questions := new(Question)
-//	qs := o.QueryTable("vt_question")
-//	err:=qs.Filter("question_id",questionID).One(questions)
-//	return questions,err
-//}
-//
-//func AddSelector(title,question_id int, template_type int8) (string){
-//	selector_id:=getMd5Token(16,"")
-//
-//	o := orm.NewOrm()
-//
-//	question:=&Selector{
-//		Title:title,
-//		QuestionId:question_id,
-//		TemplateType:template_type,
-//		Ctime:time.Now(),
-//		Mtime:time.Now(),
-//	}
-//
-//	_,err:=o.Insert(question)
-//
-//	if err == nil {
-//		options := selectorTemplate(selector_id,template_type,2)
-//		o.InsertMulti(len(options),options)
-//	}
-//	return selector_id
-//}
-//
-//func AddOption(question_id string, template_type int8) ([]Option){
-//	selector_id:=getMd5Token(16,"")
-//	options := []Option{}
-//	o := orm.NewOrm()
-//	options = selectorTemplate(selector_id,template_type,2)
-//	o.InsertMulti(len(options),options)
-//
-//	return options
-//}
-//
-//func selectorTemplate(selector_id string,template_type int8,createNum int)([]Option){
-//	if createNum == 0 {
-//		createNum = 1
-//	}
-//	multiOptions :=make([]Option,createNum)
-//
-//	switch template_type{
-//	case SINGLE_SELECTOTR:
-//		for i:=0;i<createNum;i++{
-//			opt := Option{
-//				SelectorId: selector_id,
-//				OptionId:   getMd5Token(16, ""),
-//				Title:      "选项标题",
-//				Ctime:      time.Now(),
-//				Mtime:      time.Now(),
-//			}
-//			multiOptions = append(multiOptions,opt)
-//		}
-//	case MULTI_SELECTOTR:
-//		for i:=0;i<createNum;i++{
-//			opt := Option{
-//				SelectorId: selector_id,
-//				OptionId:   getMd5Token(16, ""),
-//				Title:      "选项标题",
-//				Ctime:      time.Now(),
-//				Mtime:      time.Now(),
-//			}
-//			multiOptions = append(multiOptions,opt)
-//		}
-//	case SCORE_SELECTOTR:
-//		multiOptions= []Option{
-//			Option{
-//				SelectorId: selector_id,
-//				OptionId:   getMd5Token(16, ""),
-//				Title:      "选项标题",
-//				Ctime:      time.Now(),
-//				Mtime:      time.Now(),
-//			},
-//		}
-//	case SCORE_MATRIX_SELECTOTR:
-//	case FILL_SELECTOTR:
-//		multiOptions= []Option{
-//			Option{
-//				SelectorId: selector_id,
-//				OptionId:   getMd5Token(16, ""),
-//				Title:      "选项标题",
-//				Ctime:      time.Now(),
-//				Mtime:      time.Now(),
-//			},
-//		}
-//	case FILL_MATRIX_SELECTOTR:
-//	}
-//
-//
-//	return multiOptions
-//}
+
+import (
+	"fmt"
+	"github.com/astaxie/beego/orm"
+)
+func GetSelector(selector_id int) (Selector){
+	o := orm.NewOrm()
+	selector:=Selector{Id:selector_id}
+	o.Read(&selector)
+	o.QueryTable(Option{}).Filter("Selector__id", selector.Id).All(&selector.Option)
+
+	return selector
+}
+func AddSelector(title string,question_id , template_type int) (Selector){
+	o := orm.NewOrm()
+
+	selector:=Selector{
+		Title:title,
+		Question:&Question{Id:question_id},
+		TemplateType:int8(template_type),
+	}
+
+	selector_id,err:=o.Insert(&selector)
+
+	if err == nil {
+		options := selectorTemplate(int(selector_id),template_type,2)
+		o.InsertMulti(len(options),options)
+	}
+
+	selector = GetSelector(selector.Id)
+	return selector
+}
+
+func AddOption(selector_id , template_type int) (Option){
+	options := []Option{}
+	o := orm.NewOrm()
+	options = selectorTemplate(selector_id,template_type,1)
+	option := options[0]
+	o.Insert(&option)
+
+	fmt.Println(option)
+	return option
+}
+
+func selectorTemplate(selector_id int,template_type int,createNum int)([]Option){
+	if createNum == 0 {
+		createNum = 1
+	}
+	multiOptions :=make([]Option,0)
+
+	switch template_type{
+	case SINGLE_SELECTOTR:
+		for i:=0;i<createNum;i++{
+			opt := Option{
+				Selector: &Selector{Id:selector_id},
+				Title:      "选项标题",
+			}
+			multiOptions = append(multiOptions,opt)
+		}
+	case MULTI_SELECTOTR:
+		for i:=0;i<createNum;i++{
+			opt := Option{
+				Selector: &Selector{Id:selector_id},
+				Title:      "选项标题",
+			}
+			multiOptions = append(multiOptions,opt)
+		}
+	case SCORE_SELECTOTR:
+		multiOptions= []Option{
+			Option{
+				Selector: &Selector{Id:selector_id},
+				Title:      "选项标题",
+			},
+		}
+	case SCORE_MATRIX_SELECTOTR:
+	case FILL_SELECTOTR:
+		multiOptions= []Option{
+			Option{
+				Selector: &Selector{Id:selector_id},
+				Title:      "选项标题",
+			},
+		}
+	case FILL_MATRIX_SELECTOTR:
+	}
+
+
+	return multiOptions
+}
