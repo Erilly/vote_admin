@@ -111,7 +111,7 @@ func (this *Option) TableName() string {
 }
 
 func (this *AnswerLog) TableName() string {
-	return "answerLog"
+	return "answer_log"
 }
 
 func (this *User) TableName() string {
