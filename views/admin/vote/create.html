@@ -78,8 +78,8 @@
      * @returns {boolean}
      */
     function createSelector(_type) {
-        _reqUrl = "/selector";
-        _questionId = $("#question_id").val();
+        var _reqUrl = "/selector";
+        var _questionId = $("#question_id").val();
         $.ajax({
             url:_reqUrl,
             dataType:"json",
@@ -98,6 +98,31 @@
 
     /**
      * 新建题目
+     * @param selector_id
+     * @returns {boolean}
+     */
+    function deleteSelector(thisDom) {
+        var parentsDom = thisDom.parents('.x_panel');
+        $.ajax({
+            url:"/selector/deleteselector",
+            dataType:"json",
+            type:"post",
+            async:"false",
+            data:{selector_id:parentsDom.attr('selector-id')},
+            success:function (jsondata) {
+                if(jsondata.Code==0) {
+                    if(jsondata.Content >0 ){
+                        parentsDom.remove()
+                    }
+                }else{
+                    alert(jsondata.Msg)
+                }
+            }
+        });
+    }
+    /**
+     * 新建题目
+     * @param selector_id
      * @param _type
      * @returns {boolean}
      */
@@ -120,6 +145,29 @@
         return html;
     }
 
+    /**
+     * 新建题目
+     * @param option_id
+     * @returns {boolean}
+     */
+    function deleteOption(option_id) {
+        var deleteNum = 0;
+        $.ajax({
+            url:"/selector/deleteoption",
+            dataType:"json",
+            type:"post",
+            async:false,
+            data:{option_id:option_id},
+            success:function (jsondata) {
+                if(jsondata.Code==0) {
+                    deleteNum = jsondata.Content;
+                }else{
+                    alert(jsondata.Msg)
+                }
+            }
+        });
+        return deleteNum;
+    }
 
     /**
      * 管理选项
@@ -144,7 +192,9 @@
                         alert('最少不能少于两条')
                         return false;
                     }
-                    thisDom.parents('.form-group').remove();
+                    if(deleteOption(thisDom.parents('.form-group').attr('option-id'))>0){
+                        thisDom.parents('.form-group').remove();
+                    }
 
                 }
                 parentsDom.children('.form-group').find('.glyphicon-plus').hide();

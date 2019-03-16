@@ -6,6 +6,12 @@ const (
 	SESSION_USER_KEY = "SESSION_USER_KEY"
 )
 
+type JSONStruct struct {
+	Code int
+	Msg  string
+	Content string
+}
+
 type BaseController struct {
 	beego.Controller
 }

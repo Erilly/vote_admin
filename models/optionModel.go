@@ -4,33 +4,6 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 )
-func GetSelector(selector_id int) (Selector){
-	o := orm.NewOrm()
-	selector:=Selector{Id:selector_id}
-	o.Read(&selector)
-	o.QueryTable(Option{}).Filter("Selector__id", selector.Id).All(&selector.Option)
-
-	return selector
-}
-func AddSelector(title string,question_id , template_type int) (Selector){
-	o := orm.NewOrm()
-
-	selector:=Selector{
-		Title:title,
-		Question:&Question{Id:question_id},
-		TemplateType:int8(template_type),
-	}
-
-	selector_id,err:=o.Insert(&selector)
-
-	if err == nil {
-		options := selectorTemplate(int(selector_id),template_type,2)
-		o.InsertMulti(len(options),options)
-	}
-
-	selector = GetSelector(selector.Id)
-	return selector
-}
 
 func AddOption(selector_id , template_type int) (Option){
 	options := []Option{}
@@ -41,6 +14,17 @@ func AddOption(selector_id , template_type int) (Option){
 
 	fmt.Println(option)
 	return option
+}
+func UpdateOption(updateData *Option) (int64){
+	o := orm.NewOrm()
+	fmt.Print(updateData)
+	num,_ :=o.Update(updateData)
+	return num
+}
+func DeleteOption(where *Option) (int64){
+	o := orm.NewOrm()
+	num,_ := o.Delete(where)
+	return num
 }
 
 func selectorTemplate(selector_id int,template_type int,createNum int)([]Option){
