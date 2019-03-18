@@ -41,8 +41,8 @@
                         </a>
                     </div>
                 </div>
-
             </div>
+
             <div class="col-md-9 col-xs-12 pull-left" id="question-container">
                 <div class="x_panel">
                     <div class="x_content">
@@ -53,25 +53,104 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-10" for="first-name"><span class="required"></span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" class="form-control" name="title" value="{{.question.Title}}" placeholder="问卷标题">
+                                    <input type="text" class="form-control" name="title" value="{{.question.Title}}" placeholder="问卷标题" onchange="updateData($(this),{{.question.Id}},'question')">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"> <span class="required"></span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea class="form-control" rows="3">{{.question.Description}}"</textarea>
+                                    <textarea class="form-control" rows="3" name="description" onchange="updateData($(this),{{.question.Id}},'question')">{{.question.Description}}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                {{range $Sindex,$Selector:=.question.Selector}}
 
+                {{if eq $Selector.TemplateType 1}}
+                <div class="x_panel" selector-id="{{$Selector.Id}}">
+                    <div class="x_title">
+                        <h2>单选：</h2>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Selector.Title}}" onchange="updateData($(this),{{$Selector.Id}},'selector')">
+                            </div>
+                        </div>
+                        <div class="nav navbar-right panel_toolbox" style="min-width:0px;" onclick="deleteSelector($(this))">
+                            <i class="fa fa-close"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-horizontal form-label-left">
+
+                            {{range $Oindex,$Option:=$Selector.Option}}
+                                <div class="form-group" option-id="{{$Option.Id}}">
+                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">
+                                        <div class="iradio_flat-green disabled" style="position: relative;"><input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                                    </label>
+                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Option.Title}}"  onchange="updateData($(this),{{$Option.Id}},'option')">
+                                    </div>
+                                    {{if lt ($Oindex|add) ($Selector.Option|len)}}
+                                        <div class="col-md-1 col-sm-6 col-xs-12">
+                                            <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:none;" onclick="manageOption($(this),1,0)" ></span>
+                                            <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:block;"  onclick="manageOption($(this),1,1)"></span>
+                                        </div>
+                                    {{else}}
+                                        <div class="col-md-1 col-sm-6 col-xs-12">
+                                            <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),1,0)" ></span>
+                                            <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;"  onclick="manageOption($(this),1,1)"></span>
+                                        </div>
+                                    {{end}}
+                                </div>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+                {{end}}
+
+                {{end}}
+
+
+            </div>
         </div>
     </div>
 </div>
 <script>
+    function updateData(thisDom,id,type){
+        var params = {};
+        params[thisDom.attr('name')] = thisDom.val();
+
+        var _reqUrl;
+        switch (type) {
+            case 'question':
+                _reqUrl = '/selector/updatequestion';
+                params.question_id = id;
+                break;
+            case 'selector':
+                _reqUrl = '/selector/updateselector';
+                params.selector_id = id;
+                break;
+            case 'option':
+                _reqUrl = '/selector/updateoption';
+                params.option_id = id;
+                break;
+        }
+
+
+        $.ajax({
+            url:_reqUrl,
+            dataType:"json",
+            type:"post",
+            async:"false",
+            data:params,
+            success:function (jsondata) {
+            }
+        });
+    }
+
     /**
      * 新建题目
      * @param _type

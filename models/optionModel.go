@@ -5,6 +5,14 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
+func GetOption(option_id int) (Option,error){
+	o := orm.NewOrm()
+	option:=Option{Id:option_id}
+	err:=o.Read(&option)
+
+	return option,err
+}
+
 func AddOption(selector_id , template_type int) (Option){
 	options := []Option{}
 	o := orm.NewOrm()
@@ -17,8 +25,9 @@ func AddOption(selector_id , template_type int) (Option){
 }
 func UpdateOption(updateData *Option) (int64){
 	o := orm.NewOrm()
-	fmt.Print(updateData)
+	fmt.Println(updateData)
 	num,_ :=o.Update(updateData)
+	fmt.Println(num)
 	return num
 }
 func DeleteOption(where *Option) (int64){

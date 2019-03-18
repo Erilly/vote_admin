@@ -4,7 +4,15 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-func GetSelector(selector_id int) (Selector){
+func GetSelector(selector_id int) (Selector,error){
+	o := orm.NewOrm()
+	selector:=Selector{Id:selector_id}
+	err:=o.Read(&selector)
+
+	return selector,err
+}
+
+func GetSelectorInfo(selector_id int) (Selector){
 	o := orm.NewOrm()
 	selector:=Selector{Id:selector_id}
 	o.Read(&selector)
@@ -29,7 +37,7 @@ func AddSelector(title string,question_id , template_type int) (Selector){
 		o.InsertMulti(len(options),options)
 	}
 
-	selector = GetSelector(selector.Id)
+	selector = GetSelectorInfo(selector.Id)
 	return selector
 }
 

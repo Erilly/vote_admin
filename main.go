@@ -19,6 +19,14 @@ func main() {
 	//自动建表
 	orm.RunSyncdb("default", false, true)
 
+	//模板中使用{{add $index}}或{{$index|add}}
+	beego.AddFuncMap("add", Indexaddone)
+
 	beego.Run()
 }
 
+//自定义模板函数，索引加1
+func Indexaddone(index int) (index1 int) {
+	index1 = index + 1
+	return
+}
