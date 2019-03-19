@@ -6,8 +6,8 @@
             </div>
         </div>
         <div class="clearfix"></div>
-        <div class="row">
-            <div class="col-md-3 pull-right">
+        <div class="row" >
+            <div class="col-md-3 pull-right" style="position: fixed;z-index: 999;right: 0px;width:297px;">
                 <div class="x_panel">
                     <div class="x_content">
                         <a class="btn btn-success">
@@ -18,7 +18,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="x_panel">
+                <div class="x_panel" >
                     <div class="x_content">
                         <p>双击添加</p>
                         <a class="btn btn-app create-selector-template" ondblclick="createSelector(1)">
@@ -31,13 +31,7 @@
                             <i class="fa fa-star-o"></i> 打分
                         </a>
                         <a class="btn btn-app create-selector-template" ondblclick="createSelector(4)">
-                            <i class="fa fa-th"></i> 矩阵打分
-                        </a>
-                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(5)">
                             <i class="fa fa-square-o"></i> 填空
-                        </a>
-                        <a class="btn btn-app create-selector-template" ondblclick="createSelector(6)">
-                            <i class="fa fa-th-large"></i> 矩阵填空
                         </a>
                     </div>
                 </div>
@@ -68,48 +62,182 @@
                 </div>
                 {{range $Sindex,$Selector:=.question.Selector}}
 
-                {{if eq $Selector.TemplateType 1}}
-                <div class="x_panel" selector-id="{{$Selector.Id}}">
-                    <div class="x_title">
-                        <h2>单选：</h2>
-                        <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Selector.Title}}" onchange="updateData($(this),{{$Selector.Id}},'selector')">
+                    {{if eq $Selector.TemplateType 1}}
+                    <div class="x_panel" selector-id="{{$Selector.Id}}">
+                        <div class="x_title">
+                            <h2>单选：</h2>
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Selector.Title}}" onchange="updateData($(this),{{$Selector.Id}},'selector')">
+                                </div>
+                            </div>
+                            <div class="nav navbar-right panel_toolbox" style="min-width:0px;" onclick="deleteSelector($(this))">
+                                <i class="fa fa-close"></i>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="form-horizontal form-label-left">
+
+                                {{range $Oindex,$Option:=$Selector.Option}}
+                                    <div class="form-group" option-id="{{$Option.Id}}">
+                                        <label class="control-label col-md-1 col-sm-3 col-xs-12">
+                                            <div class="iradio_flat-green disabled" style="position: relative;"><input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                                        </label>
+                                        <div class="col-md-5 col-sm-6 col-xs-12">
+                                            <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Option.Title}}"  onchange="updateData($(this),{{$Option.Id}},'option')">
+                                        </div>
+                                        {{if lt ($Oindex|add) ($Selector.Option|len)}}
+                                            <div class="col-md-1 col-sm-6 col-xs-12">
+                                                <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:none;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:block;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                            </div>
+                                        {{else}}
+                                            <div class="col-md-1 col-sm-6 col-xs-12">
+                                                <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                            </div>
+                                        {{end}}
+                                    </div>
+                                {{end}}
                             </div>
                         </div>
-                        <div class="nav navbar-right panel_toolbox" style="min-width:0px;" onclick="deleteSelector($(this))">
-                            <i class="fa fa-close"></i>
-                        </div>
-                        <div class="clearfix"></div>
                     </div>
-                    <div class="x_content">
-                        <div class="form-horizontal form-label-left">
+                    {{end}}
 
-                            {{range $Oindex,$Option:=$Selector.Option}}
-                                <div class="form-group" option-id="{{$Option.Id}}">
-                                    <label class="control-label col-md-1 col-sm-3 col-xs-12">
-                                        <div class="iradio_flat-green disabled" style="position: relative;"><input type="radio" class="flat" name="iCheck" disabled="disabled" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                                    </label>
-                                    <div class="col-md-5 col-sm-6 col-xs-12">
-                                        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Option.Title}}"  onchange="updateData($(this),{{$Option.Id}},'option')">
+                    {{if eq $Selector.TemplateType 2}}
+                        <div class="x_panel" selector-id="{{$Selector.Id}}">
+                            <div class="x_title">
+                                <h2>多选：</h2>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Selector.Title}}"  onchange="updateData($(this),{{$Selector.Id}},'selector')">
                                     </div>
-                                    {{if lt ($Oindex|add) ($Selector.Option|len)}}
-                                        <div class="col-md-1 col-sm-6 col-xs-12">
-                                            <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:none;" onclick="manageOption($(this),1,0)" ></span>
-                                            <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:block;"  onclick="manageOption($(this),1,1)"></span>
-                                        </div>
-                                    {{else}}
-                                        <div class="col-md-1 col-sm-6 col-xs-12">
-                                            <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),1,0)" ></span>
-                                            <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;"  onclick="manageOption($(this),1,1)"></span>
+                                </div>
+                                <div class="nav navbar-right panel_toolbox" style="min-width:0px;" onclick="deleteSelector($(this))">
+                                    <i class="fa fa-close"></i>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="form-horizontal form-label-left">
+                                    {{range $Oindex,$Option:=$Selector.Option}}
+                                        <div class="form-group" option-id="{{$Option.Id}}">
+                                            <label class="control-label col-md-1 col-sm-3 col-xs-12">
+                                                <div class="icheckbox_flat-green disabled" style="position: relative;"><input type="checkbox" class="flat" disabled="disabled" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                                            </label>
+                                            <div class="col-md-5 col-sm-6 col-xs-12">
+                                                <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Option.Title}}"  onchange="updateData($(this),{{$Option.Id}},'option')">
+                                            </div>
+                                            {{if lt ($Oindex|add) ($Selector.Option|len)}}
+                                                <div class="col-md-1 col-sm-6 col-xs-12">
+                                                    <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:none;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                    <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:block;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                                </div>
+                                            {{else}}
+                                                <div class="col-md-1 col-sm-6 col-xs-12">
+                                                    <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                    <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                                </div>
+                                            {{end}}
                                         </div>
                                     {{end}}
                                 </div>
-                            {{end}}
+                            </div>
                         </div>
-                    </div>
-                </div>
-                {{end}}
+                    {{end}}
+
+                    {{if eq $Selector.TemplateType 3}}
+                        <div class="x_panel" selector-id="{{$Selector.Id}}">
+                            <div class="x_title">
+                                <h2>打分：</h2>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Selector.Title}}"  onchange="updateData($(this),{{$Selector.Id}},'selector')">
+                                    </div>
+                                </div>
+                                <div class="nav navbar-right panel_toolbox" style="min-width:0px;" onclick="deleteSelector($(this))">
+                                    <i class="fa fa-close"></i>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="form-horizontal form-label-left">
+                                    {{range $Oindex,$Option:=$Selector.Option}}
+                                        <div class="form-group" option-id="{{$Option.Id}}">
+                                            <label class="control-label col-md-1 col-sm-3 col-xs-12">
+                                            </label>
+                                            <div class="col-md-5 col-sm-6 col-xs-12">
+                                                <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Option.Title}}"  onchange="updateData($(this),{{$Option.Id}},'option')">
+                                            </div>
+                                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                                <span><i class="fa fa-star-o" style="font-size: 25px;"></i></span>
+                                                <span><i class="fa fa-star-o" style="font-size: 25px;"></i></span>
+                                                <span><i class="fa fa-star-o" style="font-size: 25px;"></i></span>
+                                                <span><i class="fa fa-star-o" style="font-size: 25px;"></i></span>
+                                                <span><i class="fa fa-star-o" style="font-size: 25px;"></i></span>
+                                            </div>
+                                            {{if lt ($Oindex|add) ($Selector.Option|len)}}
+                                                <div class="col-md-1 col-sm-6 col-xs-12">
+                                                    <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:none;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                    <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:block;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                                </div>
+                                            {{else}}
+                                                <div class="col-md-1 col-sm-6 col-xs-12">
+                                                    <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                    <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                                </div>
+                                            {{end}}
+                                        </div>
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                    {{end}}
+
+                    {{if eq $Selector.TemplateType 4}}
+                        <div class="x_panel" selector-id="{{$Selector.Id}}">
+                            <div class="x_title">
+                                <h2>填空：</h2>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Selector.Title}}"  onchange="updateData($(this),{{$Selector.Id}},'selector')">
+                                    </div>
+                                </div>
+                                <div class="nav navbar-right panel_toolbox" style="min-width:0px;" onclick="deleteSelector($(this))">
+                                    <i class="fa fa-close"></i>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="form-horizontal form-label-left">
+                                    {{range $Oindex,$Option:=$Selector.Option}}
+                                        <div class="form-group" option-id="{{$Option.Id}}">
+                                            <label class="control-label col-md-1 col-sm-3 col-xs-12">
+                                            </label>
+                                            <div class="col-md-5 col-sm-6 col-xs-12">
+                                                <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$Option.Title}}"  onchange="updateData($(this),{{$Option.Id}},'option')">
+                                            </div>
+                                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                                <input type="text" class="form-control" disabled="disabled" placeholder="请填写……">
+                                            </div>
+                                            {{if lt ($Oindex|add) ($Selector.Option|len)}}
+                                                <div class="col-md-1 col-sm-6 col-xs-12">
+                                                    <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:none;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                    <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:block;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                                </div>
+                                            {{else}}
+                                                <div class="col-md-1 col-sm-6 col-xs-12">
+                                                    <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),{{$Selector.TemplateType}},0)" ></span>
+                                                    <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;"  onclick="manageOption($(this),{{$Selector.TemplateType}},1)"></span>
+                                                </div>
+                                            {{end}}
+                                        </div>
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                    {{end}}
 
                 {{end}}
 
@@ -119,6 +247,9 @@
     </div>
 </div>
 <script>
+    /**
+     *  更新内容
+     */
     function updateData(thisDom,id,type){
         var params = {};
         params[thisDom.attr('name')] = thisDom.val();
@@ -138,8 +269,6 @@
                 params.option_id = id;
                 break;
         }
-
-
         $.ajax({
             url:_reqUrl,
             dataType:"json",
@@ -256,31 +385,27 @@
      * @returns {boolean}
      */
     function manageOption(thisDom,type,control){
-        switch(type){
-            case 1:
-                var parentsDom = thisDom.parents('.form-horizontal');
-                if( control === 0) {
-                    var selector_id = thisDom.parents('.x_panel').attr('selector-id');
-                    var optionTemplate = createOption(selector_id,type)
-                    parentsDom.append(optionTemplate);
-                }else {
-                    if(!confirm('确定删除该选项？')){
-                        return false;
-                    }
-                    if(parentsDom.children('.form-group').length<=2){
-                        alert('最少不能少于两条')
-                        return false;
-                    }
-                    if(deleteOption(thisDom.parents('.form-group').attr('option-id'))>0){
-                        thisDom.parents('.form-group').remove();
-                    }
+        var parentsDom = thisDom.parents('.form-horizontal');
+        if( control === 0) {
+            var selector_id = thisDom.parents('.x_panel').attr('selector-id');
+            var optionTemplate = createOption(selector_id,type)
+            parentsDom.append(optionTemplate);
+        }else {
+            if(!confirm('确定删除该选项？')){
+                return false;
+            }
+            if(parentsDom.children('.form-group').length<=2 && (type==1 || type==2)){
+                alert('最少不能少于两条')
+                return false;
+            }
+            if(deleteOption(thisDom.parents('.form-group').attr('option-id'))>0){
+                thisDom.parents('.form-group').remove();
+            }
 
-                }
-                parentsDom.children('.form-group').find('.glyphicon-plus').hide();
-                parentsDom.children('.form-group').find('.glyphicon-minus').show();
-                parentsDom.children('.form-group:last-child').find('.glyphicon-plus').show();
-                parentsDom.children('.form-group:last-child').find('.glyphicon-minus').hide();
-                break;
         }
+        parentsDom.children('.form-group').find('.glyphicon-plus').hide();
+        parentsDom.children('.form-group').find('.glyphicon-minus').show();
+        parentsDom.children('.form-group:last-child').find('.glyphicon-plus').show();
+        parentsDom.children('.form-group:last-child').find('.glyphicon-minus').hide();
     }
 </script>

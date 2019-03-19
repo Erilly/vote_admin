@@ -19,25 +19,19 @@ func (this *SelectorController) Post() {
 	switch template_type {
 		case models.SINGLE_SELECTOTR:
 			this.TplName = "admin/templates/single-selector.html"
-
 			title="单项选择"
+
 		case models.MULTI_SELECTOTR:
 			this.TplName = "admin/templates/multi-selector.html"
-
 			title="多项选择"
+
 		case models.SCORE_SELECTOTR:
 			this.TplName = "admin/templates/score-selector.html"
 			title="打分"
-		case models.SCORE_MATRIX_SELECTOTR:
-			this.TplName = "admin/templates/score-matrix-selector.html"
-			title="矩阵打分"
+
 		case models.FILL_SELECTOTR:
 			this.TplName = "admin/templates/fill-selector.html"
 			title="填空"
-
-		case models.FILL_MATRIX_SELECTOTR:
-			this.TplName = "admin/templates/fill-matrix-selector.html"
-			title="矩阵填空"
 	}
 
 
@@ -45,7 +39,7 @@ func (this *SelectorController) Post() {
 	this.Data["selector"] = models.AddSelector(title,question_id,template_type)
 	single_temp,_:=this.RenderString()
 
-	data:=&JSONStruct{0,strconv.Itoa(template_type), single_temp}
+	data:=&JSONStruct{0,"创建成功", single_temp}
 	this.Data["json"] = data
 	this.ServeJSON()
 	return
@@ -143,13 +137,9 @@ func (this *SelectorController) AddOption() {
 
 	case models.SCORE_SELECTOTR:
 		this.TplName = "admin/templates/score-option.html"
-	case models.SCORE_MATRIX_SELECTOTR:
-		this.TplName = "admin/templates/score-matrix-option.html"
+
 	case models.FILL_SELECTOTR:
 		this.TplName = "admin/templates/fill-option.html"
-
-	case models.FILL_MATRIX_SELECTOTR:
-		this.TplName = "admin/templates/fill-matrix-option.html"
 	}
 
 	options := models.AddOption(selector_id,template_type)

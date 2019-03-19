@@ -60,21 +60,18 @@ func selectorTemplate(selector_id int,template_type int,createNum int)([]Option)
 			multiOptions = append(multiOptions,opt)
 		}
 	case SCORE_SELECTOTR:
-		multiOptions= []Option{
-			Option{
-				Selector: &Selector{Id:selector_id},
-				Title:      "选项标题",
-			},
+		opt := Option{
+			Selector: &Selector{Id:selector_id},
+			Title:      "打分标题",
 		}
-	case SCORE_MATRIX_SELECTOTR:
+		multiOptions = append(multiOptions,opt)
+
 	case FILL_SELECTOTR:
-		multiOptions= []Option{
-			Option{
-				Selector: &Selector{Id:selector_id},
-				Title:      "选项标题",
-			},
+		opt := Option{
+			Selector: &Selector{Id:selector_id},
+			Title:      "填空标题",
 		}
-	case FILL_MATRIX_SELECTOTR:
+		multiOptions = append(multiOptions,opt)
 	}
 
 

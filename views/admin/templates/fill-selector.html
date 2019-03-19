@@ -1,0 +1,34 @@
+<div class="x_panel" selector-id="{{.selector.Id}}">
+    <div class="x_title">
+        <h2>填空：</h2>
+        <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{.selector.Title}}"  onchange="updateData($(this),{{.selector.Id}},'selector')">
+            </div>
+        </div>
+        <div class="nav navbar-right panel_toolbox" style="min-width:0px;" onclick="deleteSelector($(this))">
+            <i class="fa fa-close"></i>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <div class="form-horizontal form-label-left">
+            {{range $index,$element:=.selector.Option}}
+                <div class="form-group" option-id="{{$element.Id}}">
+                    <label class="control-label col-md-1 col-sm-3 col-xs-12">
+                    </label>
+                    <div class="col-md-5 col-sm-6 col-xs-12">
+                        <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text" name="title" value="{{$element.Title}}"  onchange="updateData($(this),{{$element.Id}},'option')">
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control" disabled="disabled" placeholder="请填写……">
+                    </div>
+                    <div class="col-md-1 col-sm-6 col-xs-12">
+                        <span class="glyphicon glyphicon-plus" style="margin-top:10px;display:block;" onclick="manageOption($(this),4,0)" ></span>
+                        <span class="glyphicon glyphicon-minus"  style="margin-top:10px;display:none;"  onclick="manageOption($(this),4,1)"></span>
+                    </div>
+                </div>
+            {{end}}
+        </div>
+    </div>
+</div>
