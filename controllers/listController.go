@@ -10,8 +10,12 @@ type ListController struct {
 }
 
 func (this *ListController) Get() {
+	page,_:= this.GetInt("page")
+	title:= this.GetString("title")
 
-	this.Data["questions"],_ = models.GetAllQuestion()
+	this.Data["questions"],this.Data["paginator"],_ = models.GetAllQuestion(page,title)
+	this.Data["title"]=title
+
 	this.TplName = "admin/vote/list.html"
 
 }

@@ -5,13 +5,26 @@ import (
 )
 
 
-func GetAllQuestion()([]*Question,error){
+func GetAllQuestion(page int, title string)([]*Question,map[string]interface{},error){
+	if page==0 {
+		page=1
+	}
+
+	limit:=5
+	offset:=(page-1)*limit
+
 	o := orm.NewOrm()
 	questions := make([]*Question,0)
 	qs := o.QueryTable(Question{})
-	_,err:=qs.OrderBy("-ctime").All(&questions)
+	if len(title)>0{
+		qs=qs.Filter("title__icontains",title)
+	}
+	count,_:=qs.OrderBy("-ctime").Limit( limit ).Offset( offset ).Count()
+	_,err:=qs.OrderBy("-ctime").Limit( limit ).Offset( offset ).All(&questions)
 
-	return questions,err
+	paginator:=Paginator(page,limit,count)
+
+	return questions,paginator,err
 }
 
 func GetQuestion(question_id int)(Question,error){
