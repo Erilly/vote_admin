@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!--导入css-->
+    <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--导入jquery.js-->
+    <script src="/static/vendors/jquery/dist/jquery.min.js"></script>
+    <!--导入bootstrap.js-->
+    <script src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body style="background: #EFEFEF;color:#666666">
+<div class="container" >
+    <div class="jumbotron" style="background: #fff;margin:5px;">
+        <div class="page-header">
+            <h3 class="text-center">我是标题3 h3</h3>
+            <p class="text-warning">
+                这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。
+            </p>
+        </div>
+        <form role="form" style="">
+            <div class="form-group">
+                <label for="name">1、单选题</label>
+                <div class="radio">
+                    <label><input type="radio">单选选项</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio">单选选项</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio">单选选项</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio">单选选项</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">2、单选题</label>
+                <div class="checkbox">
+                    <label><input type="checkbox">多选选项</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox">多选选项</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox">多选选项</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox">多选选项</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">3、填空题</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="form-group">
+                <label for="name">3、填空题</label>
+                <div class="input-group ">
+                    <span class="input-group-addon">姓名：</span>
+                    <input type="text" class="form-control" >
+                </div>
+                <br>
+                <div class="input-group ">
+                    <span class="input-group-addon">年龄：</span>
+                    <input type="text" class="form-control" >
+                </div>
+                <br>
+                <div class="input-group ">
+                    <span class="input-group-addon">家庭住址：</span>
+                    <input type="text" class="form-control" >
+                </div>
+                <br>
+            </div>
+
+
+            <div class="form-group">
+                <label for="name">4、打分题</label>
+                <p class="star-group">
+                    <i class="fill-star"></i>
+                    <i class="fill-star"></i>
+                    <i class="fill-star"></i>
+                    <i class="empty-star"></i>
+                    <i class="empty-star"></i>
+                </p>
+            </div>
+
+            <div class="star-group">
+                <label for="name">4、打分题</label>
+                <div class="star-group">
+                    <label class="star-title">单选选项:</label>
+                    <div class="star-options">
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="empty-star"></i>
+                        <i class="empty-star"></i>
+                    </div>
+                </div>
+                <div class="star-group">
+                    <label class="star-title">单选选项:</label>
+                    <div class="star-options">
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="empty-star"></i>
+                        <i class="empty-star"></i>
+                    </div>
+                </div>
+                <div class="star-group">
+                    <label class="star-title">单选选项:</label>
+                    <div class="star-options">
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="empty-star"></i>
+                        <i class="empty-star"></i>
+                    </div>
+                </div>
+                <div class="star-group">
+                    <label class="star-title">单选选项:</label>
+                    <div class="star-options">
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="fill-star"></i>
+                        <i class="empty-star"></i>
+                        <i class="empty-star"></i>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="text-center">
+                <button type="button" class="btn btn-success text-center">提交问卷</button>
+            </div>
+        </form>
+    </div>
+    <style>
+        .empty-star{
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: url(/static/images/score_type_1.png) no-repeat;
+        }
+        .fill-star{
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: url(/static/images/score_type_2.png) no-repeat;
+        }
+        .star-group{
+            float: left;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .star-title{
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #555;
+            text-align: center;
+        }
+        .star-options{
+            display:inline-block;
+            position:absolute;
+        }
+    </style>
+</div>
+</body>
+</html>

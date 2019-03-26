@@ -1,13 +1,14 @@
 package controllers
 
+import "github.com/astaxie/beego"
+
 type IndexController struct {
-	BaseController
+	beego.Controller
 }
 
 func (this *IndexController) Get() {
 	this.Data["Website"] = "beego.me"
 	this.Data["Email"] = "astaxie@gmail.com"
-	this.Data["logininfo"] = this.GetSession(SESSION_USER_KEY)
 
-	this.TplName = "index.tpl"
+	this.TplName = "index.html"
 }
