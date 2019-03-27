@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>{{.question.Title}}</title>
     <!--导入css-->
     <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!--导入jquery.js-->
@@ -14,132 +14,112 @@
 <div class="container" >
     <div class="jumbotron" style="background: #fff;margin:5px;">
         <div class="page-header">
-            <h3 class="text-center">我是标题3 h3</h3>
+            <h3 class="text-center">{{.question.Title}}</h3>
             <p class="text-warning">
-                这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。这是一个演示引导主体副本用法的实例。
+            {{.question.Description}}
             </p>
         </div>
-        <form role="form" style="">
-            <div class="form-group">
-                <label for="name">1、单选题</label>
-                <div class="radio">
-                    <label><input type="radio">单选选项</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio">单选选项</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio">单选选项</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio">单选选项</label>
-                </div>
-            </div>
+        <form role="form" id="form">
+            <input type="hidden" name="question" value="{{.question.Id}}">
+            {{range $Sindex,$Selector:=.question.Selector}}
 
-            <div class="form-group">
-                <label for="name">2、单选题</label>
-                <div class="checkbox">
-                    <label><input type="checkbox">多选选项</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox">多选选项</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox">多选选项</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox">多选选项</label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="name">3、填空题</label>
-                <input type="text" class="form-control" id="name">
-            </div>
-            <div class="form-group">
-                <label for="name">3、填空题</label>
-                <div class="input-group ">
-                    <span class="input-group-addon">姓名：</span>
-                    <input type="text" class="form-control" >
-                </div>
-                <br>
-                <div class="input-group ">
-                    <span class="input-group-addon">年龄：</span>
-                    <input type="text" class="form-control" >
-                </div>
-                <br>
-                <div class="input-group ">
-                    <span class="input-group-addon">家庭住址：</span>
-                    <input type="text" class="form-control" >
-                </div>
-                <br>
-            </div>
-
-
-            <div class="form-group">
-                <label for="name">4、打分题</label>
-                <p class="star-group">
-                    <i class="fill-star"></i>
-                    <i class="fill-star"></i>
-                    <i class="fill-star"></i>
-                    <i class="empty-star"></i>
-                    <i class="empty-star"></i>
-                </p>
-            </div>
-
-            <div class="star-group">
-                <label for="name">4、打分题</label>
-                <div class="star-group">
-                    <label class="star-title">单选选项:</label>
-                    <div class="star-options">
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="empty-star"></i>
-                        <i class="empty-star"></i>
+                {{if eq $Selector.TemplateType 1}}
+                    <div class="form-group">
+                        <label for="name">{{$Sindex | add}}、{{$Selector.Title}}</label>
+                        {{range $Oindex,$Option:=$Selector.Option}}
+                            <div class="radio">
+                                <label><input type="radio" name="selector_{{$Selector.Id}}[]" value="{{$Option.Id}}">{{$Option.Title}}</label>
+                            </div>
+                        {{end}}
                     </div>
-                </div>
-                <div class="star-group">
-                    <label class="star-title">单选选项:</label>
-                    <div class="star-options">
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="empty-star"></i>
-                        <i class="empty-star"></i>
+                {{end}}
+
+                {{if eq $Selector.TemplateType 2}}
+                    <div class="form-group">
+                        <label for="name">{{$Sindex | add}}、{{$Selector.Title}}</label>
+                        {{range $Oindex,$Option:=$Selector.Option}}
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="selector_{{$Selector.Id}}[opt_{{$Option.Id}}]" value="{{$Option.Id}}">{{$Option.Title}}</label>
+                            </div>
+                        {{end}}
                     </div>
-                </div>
-                <div class="star-group">
-                    <label class="star-title">单选选项:</label>
-                    <div class="star-options">
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="empty-star"></i>
-                        <i class="empty-star"></i>
+                {{end}}
+
+                {{if eq $Selector.TemplateType 3}}
+                    {{if eq ($Selector.Option|len) 1}}
+                        <div class="form-group">
+                            <label for="name">{{$Sindex | add}}、{{$Selector.Title}}</label>
+                            {{range $Oindex,$Option:=$Selector.Option}}
+                                <input type="hidden" name="selector_{{$Selector.Id}}[opt_{{$Option.Id}}]" value="">
+                                <div class="star-group">
+                                    <i class="star empty-star"></i>
+                                    <i class="star empty-star"></i>
+                                    <i class="star empty-star"></i>
+                                    <i class="star empty-star"></i>
+                                    <i class="star empty-star"></i>
+                                </div>
+                            {{end}}
+                        </div>
+                    {{else}}
+                        <div class="star-group">
+                            <label for="name">{{$Sindex | add}}、{{$Selector.Title}}</label>
+                            {{range $Oindex,$Option:=$Selector.Option}}
+                                <div class="star-group">
+                                    <label class="star-title">{{$Option.Title}}：</label>
+                                    <input type="hidden" name="selector_{{$Selector.Id}}[opt_{{$Option.Id}}]" value="">
+                                    <div class="star-options">
+                                        <i class="star empty-star"></i>
+                                        <i class="star empty-star"></i>
+                                        <i class="star empty-star"></i>
+                                        <i class="star empty-star"></i>
+                                        <i class="star empty-star"></i>
+                                    </div>
+                                </div>
+                            {{end}}
+                        </div>
+                    {{end}}
+                {{end}}
+
+                {{if eq $Selector.TemplateType 4}}
+                    <div class="form-group">
+                    <label for="name">{{$Sindex | add}}、{{$Selector.Title}}</label>
+                        {{if eq ($Selector.Option|len) 1}}
+                            {{range $Oindex,$Option:=$Selector.Option}}
+                                <input type="text" class="form-control" name="selector_{{$Selector.Id}}[opt_{{$Option.Id}}]">
+                            {{end}}
+                        {{else}}
+                            {{range $Oindex,$Option:=$Selector.Option}}
+                                <div class="input-group ">
+                                    <span class="input-group-addon">{{$Option.Title}}：</span>
+                                    <input type="text" class="form-control" name="selector_{{$Selector.Id}}[opt_{{$Option.Id}}]">
+                                </div>
+                                <br>
+                            {{end}}
+                        {{end}}
                     </div>
+                {{end}}
+
+            {{end}}
+            <br>
+            <br>
+            <br>
+            {{if .isshow}}
+                <div class="text-center">
+                    <button type="button" class="btn btn-success text-center">提交问卷</button>
                 </div>
-                <div class="star-group">
-                    <label class="star-title">单选选项:</label>
-                    <div class="star-options">
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="fill-star"></i>
-                        <i class="empty-star"></i>
-                        <i class="empty-star"></i>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <div class="text-center">
-                <button type="button" class="btn btn-success text-center">提交问卷</button>
-            </div>
+            {{end}}
         </form>
     </div>
+    <script>
+        $('.star').bind('click',function(){
+            var point = $(this).index()+1;
+
+            $(this).parent().find('.star').removeClass('fill-star').addClass('empty-star');
+            $(this).parent().find('.star:lt('+ point +')').removeClass('empty-star').addClass('fill-star');
+
+            $(this).parent().prev().val(point)
+        });
+    </script>
     <style>
         .empty-star{
             display: inline-block;

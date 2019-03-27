@@ -43,3 +43,13 @@ func (this *ListController) Edit(){
 	this.TplName = "admin/vote/create.html"
 
 }
+
+func (this *ListController) Preview() {
+	question_id,_:=strconv.Atoi(this.Ctx.Input.Param("0"))
+	this.Data["question"] = models.GetQuestionInfo(question_id)
+	this.Data["isshow"] = false
+
+	this.Layout = ""
+	this.TplName = "index.html"
+
+}
