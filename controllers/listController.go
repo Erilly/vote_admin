@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"gopkg.in/mgo.v2/bson"
 	"strconv"
 	"vote_admin/models"
 )
@@ -52,4 +53,15 @@ func (this *ListController) Preview() {
 	this.Layout = ""
 	this.TplName = "index.html"
 
+}
+
+func (this *ListController) Publish() {
+	question_id,_:=strconv.Atoi(this.Ctx.Input.Param("0"))
+
+	models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Upsert(bson.M{"id":question_id},models.GetQuestionInfo(question_id))
+
+	this.Data["questionpage"] = this.Ctx.Request.RequestURI
+
+	this.Layout = ""
+	this.TplName = "publish.html"
 }
