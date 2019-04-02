@@ -4,6 +4,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
 	"vote_admin/models"
+	"html/template"
 )
 
 type ListController struct {
@@ -60,7 +61,12 @@ func (this *ListController) Publish() {
 
 	models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Upsert(bson.M{"id":question_id},models.GetQuestionInfo(question_id))
 
-	this.Data["questionpage"] = this.Ctx.Request.RequestURI
+	url := "http://"+this.Ctx.Request.Host+"/questionpage-"+this.Ctx.Input.Param("0")
+
+	qr := template.URL("data:image/png;base64,"+models.Qrcode(url))
+
+	this.Data["questionpage"] =url
+	this.Data["qr"] = qr
 
 	this.Layout = ""
 	this.TplName = "publish.html"
