@@ -19,8 +19,7 @@
             {{.question.Description}}
             </p>
         </div>
-        <form role="form" id="form">
-            <input type="hidden" name="question" value="{{.question.Id}}">
+        <form role="form" id="pager-form">
             {{range $Sindex,$Selector:=.question.Selector}}
 
                 {{if eq $Selector.TemplateType 1}}
@@ -28,7 +27,7 @@
                         <label for="name">{{$Sindex | add}}、{{$Selector.Title}}</label>
                         {{range $Oindex,$Option:=$Selector.Option}}
                             <div class="radio">
-                                <label><input type="radio" name="selector_{{$Selector.Id}}[]" value="{{$Option.Id}}">{{$Option.Title}}</label>
+                                <label><input type="radio" name="selector_{{$Selector.Id}}" value="{{$Option.Id}}">{{$Option.Title}}</label>
                             </div>
                         {{end}}
                     </div>
@@ -105,7 +104,7 @@
             <br>
             {{if .isshow}}
                 <div class="text-center">
-                    <button type="button" class="btn btn-success text-center">提交问卷</button>
+                    <button type="submit" class="btn btn-success text-center">提交问卷</button>
                 </div>
             {{end}}
         </form>
@@ -118,6 +117,52 @@
             $(this).parent().find('.star:lt('+ point +')').removeClass('empty-star').addClass('fill-star');
 
             $(this).parent().prev().val(point)
+        });
+        $('#pager-form').bind('submit',function(){
+            var formObject = {};
+            var formArray = $(this).serializeArray();
+
+            $.each(formArray,function(i,item){
+                if(item.name.indexOf('[opt_')!==-1){
+                    tmp = item.name.split('[');
+                    opt = tmp[1].split(']');
+                    opt
+                    item.name = tmp[0];
+                    formObject[item.name][opt[0]] = item.value
+                }else{
+                    if(formObject[item.name]){
+                        formObject[item.name].push(item.value)
+                    }else{
+                        var arr = [];
+                        arr.push(item.value);
+                        formObject[item.name] = arr;
+                    }
+                }
+            });
+console.log(formObject);return false;
+            for(var i in formArray){
+                if(!formArray[i].value){
+                    alert('请完成问卷后提交！')
+                    return false;
+                }
+            }
+            $.ajax({
+                url:"/questionpage-{{.question.Id}}",
+                dataType:"json",
+                contentType: "application/json; charset=utf-8",
+                type:"post",
+                async:"false",
+                data:JSON.stringify(formObject),
+                success:function (jsondata) {
+                    if(jsondata.Code==0) {
+                        if(jsondata.Content >0 ){
+                        }
+                    }else{
+                        alert(jsondata.Msg)
+                    }
+                }
+            });
+            return false;
         });
     </script>
     <style>

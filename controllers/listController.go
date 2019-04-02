@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"gopkg.in/mgo.v2/bson"
+	"html/template"
 	"strconv"
 	"vote_admin/models"
-	"html/template"
 )
 
 type ListController struct {
@@ -59,7 +59,14 @@ func (this *ListController) Preview() {
 func (this *ListController) Publish() {
 	question_id,_:=strconv.Atoi(this.Ctx.Input.Param("0"))
 
-	models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Upsert(bson.M{"id":question_id},models.GetQuestionInfo(question_id))
+	question:=models.GetQuestionInfo(question_id)
+	question.PublishStatus=1
+
+	_,err :=models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Upsert(bson.M{"id":question_id},question)
+
+	if err==nil{
+		models.UpdateQuestion(&question)
+	}
 
 	url := "http://"+this.Ctx.Request.Host+"/questionpage-"+this.Ctx.Input.Param("0")
 
