@@ -122,6 +122,14 @@
         $('#pager-form').bind('submit',function(){
             var formObject = {};
             var formArray = $(this).serializeArray();
+            for(var i in formArray){
+                if(!formArray[i].value){
+                    alert('请完成问卷后提交！')
+                    return false;
+                }
+            }
+
+
             formObject.question_id = {{.question.Id}}
             $.each(formArray,function(i,item){
                 if(item.name.indexOf('[opt_')!==-1){
@@ -147,25 +155,18 @@
                     }
                 }
             });
-            for(var i in formArray){
-                if(!formArray[i].value){
-                    alert('请完成问卷后提交！')
-                    return false;
-                }
-            }
+
             $.ajax({
                 url:"/questionpage-{{.question.Id}}",
                 dataType:"json",
-                contentType: "application/json; charset=utf-8",
                 type:"post",
                 async:"false",
-                data:JSON.stringify(formObject),
+                data:{answer:JSON.stringify(formObject)},
                 success:function (jsondata) {
                     if(jsondata.Code==0) {
-                        if(jsondata.Content >0 ){
-                        }
+                        window.location.reload();
                     }else{
-                        alert(jsondata.Msg)
+                        alert(jsondata.Msg);
                     }
                 }
             });

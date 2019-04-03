@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
+	"strings"
 	"vote_admin/models"
 )
 
@@ -13,24 +15,62 @@ type IndexController struct {
 }
 
 func (this *IndexController) Get() {
-	question_id,_:=strconv.Atoi(this.Ctx.Input.Param(":id"))
-	var questionInfo models.Question
+	question_id:=this.Ctx.Input.Param(":id")
+	var cv bool
 
-	models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Find(bson.M{"id":question_id}).One(&questionInfo)
+	ap:=this.Ctx.GetCookie("author-page")
 
-	this.Data["question"] = questionInfo
-	this.Data["isshow"] = true
+	for  _,val := range strings.Split(ap,"|"){
+		if question_id == val{
+			cv = true
+		}
+	}
+	if cv==false {
+		qid, _ := strconv.Atoi(question_id)
+		var questionInfo models.Question
 
-	this.TplName = "index.html"
+		models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Find(bson.M{"id": qid}).One(&questionInfo)
+
+		this.Data["question"] = questionInfo
+		this.Data["isshow"] = true
+
+		this.TplName = "index.html"
+	}else{
+		this.Data["warning"] = "您已提交该问卷，感谢您的参与！"
+		this.TplName = "warning.html"
+	}
 }
 
 func (this *IndexController) Post(){
-	ask:=this.Ctx.Input.RequestBody
+	question_id:=this.Ctx.Input.Param(":id")
+	answer:= this.Input().Get("answer")
+	fmt.Println(question_id,answer)
 
-fmt.Println(ask)
 	var data *JSONStruct
 	var content  string
-	data=&JSONStruct{0,"更新失败", content}
+	var cv bool
+
+	ap:=this.Ctx.GetCookie("author-page")
+
+	for  _,val := range strings.Split(ap,"|"){
+		if question_id == val{
+			cv = true
+		}
+	}
+
+	if cv==false{
+		var f interface{}
+		json.Unmarshal([]byte(answer), &f)
+		qid,_:=strconv.Atoi(question_id)
+
+		models.AddAnswerLog(qid, answer)
+		models.GetDatabase().C(models.MONGO_COLLECTION_VOTE_LOG).Insert(f)
+
+		this.Ctx.SetCookie("author-page", ap+"|"+question_id)
+		data=&JSONStruct{0,"已成功提交", content}
+	}else{
+		data=&JSONStruct{1,"您已提交该问卷，感谢您的参与！", content}
+	}
 
 	this.Data["json"] = data
 	this.ServeJSON()

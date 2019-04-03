@@ -25,7 +25,7 @@ func (this *LoginController) Post() {
 		beego.AppConfig.String("adminpass") == password{
 
 		this.SetSession(SESSION_USER_KEY,username)
-		this.Redirect("/index",302)
+		this.Redirect("/list",302)
 	}
 	this.TplName = "admin/vote/login.html"
 }

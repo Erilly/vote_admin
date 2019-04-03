@@ -58,7 +58,7 @@ type Option struct{
 
 type AnswerLog struct{
 	Id int
-	QuestionId string `orm:"index;type(char);size(8)" description:"问卷ID"`
+	QuestionId int `orm:"index" description:"问卷ID"`
 	Content string `orm:"type(text)" description:"答案结果"`
 	Token string `orm:"index;type(char);size(32)" description:"答题客户端标识"`
 	UserId int `orm:"default(0)" description:"答题用户id"`
