@@ -38,7 +38,7 @@
                         <label for="name">{{$Sindex | add}}、{{$Selector.Title}}</label>
                         {{range $Oindex,$Option:=$Selector.Option}}
                             <div class="checkbox">
-                                <label><input type="checkbox" name="selector_{{$Selector.Id}}[opt_{{$Option.Id}}]" value="{{$Option.Id}}">{{$Option.Title}}</label>
+                                <label><input type="checkbox" name="selector_{{$Selector.Id}}" value="{{$Option.Id}}">{{$Option.Title}}</label>
                             </div>
                         {{end}}
                     </div>
@@ -118,17 +118,25 @@
 
             $(this).parent().prev().val(point)
         });
+
         $('#pager-form').bind('submit',function(){
             var formObject = {};
             var formArray = $(this).serializeArray();
-
+            formObject.question_id = {{.question.Id}}
             $.each(formArray,function(i,item){
                 if(item.name.indexOf('[opt_')!==-1){
                     tmp = item.name.split('[');
-                    opt = tmp[1].split(']');
-                    opt
                     item.name = tmp[0];
-                    formObject[item.name][opt[0]] = item.value
+                    opt = tmp[1].split(']');
+                    var fill = {}
+                    fill[opt[0]] = item.value;
+                    if(formObject[item.name]){
+                        formObject[item.name].push(fill)
+                    }else{
+                        var arr = [];
+                        arr.push(fill);
+                        formObject[item.name] = arr;
+                    }
                 }else{
                     if(formObject[item.name]){
                         formObject[item.name].push(item.value)
@@ -139,7 +147,6 @@
                     }
                 }
             });
-console.log(formObject);return false;
             for(var i in formArray){
                 if(!formArray[i].value){
                     alert('请完成问卷后提交！')
