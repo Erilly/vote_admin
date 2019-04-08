@@ -1,0 +1,263 @@
+<script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+<div class="right_col" role="main">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Form Elements</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        {{range $Sindex,$Selector:=.question.Selector}}
+
+            {{if eq $Selector.TemplateType 1}}
+                <div class="row">
+                    <div class="col-md-12 col-sm-4 col-xs-12">
+                        <div class="x_panel tile fixed_height_300 overflow_hidden">
+                            <div class="x_content">
+                                <table class="" style="width:100%">
+                                    <tbody>
+                                    <tr>
+                                        <th style="width:37%;">
+                                            <p>{{$Selector.Title}}</p>
+                                        </th>
+                                        <th>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                                <p class="">选项</p>
+                                            </div>
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                                <p class="">占比</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td><iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
+                                            <canvas id="canvasDoughnut-{{$Selector.Id}}" height="280" width="280" style="margin: 15px 10px 10px 0px; width: 140px; height: 140px;"></canvas>
+                                        </td>
+                                        <td>
+                                            <table class="tile_info">
+                                                <tbody>
+                                                {{range $Oindex,$Option:=$Selector.Option}}
+                                                    <tr>
+                                                        <td>
+                                                            <p><i class="fa fa-square blue"></i>{{$Option.Title}} </p>
+                                                        </td>
+                                                        <td>{{$Option.Id}}%</td>
+                                                    </tr>
+                                                {{end}}
+                                                </tbody></table>
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        if ($('#canvasDoughnut-{{$Selector.Id}}').length){
+
+                            var chart_doughnut_settings = {
+                                type: 'doughnut',
+                                tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+                                data: {
+                                    labels: [
+                                        "Symbian",
+                                        "Blackberry",
+                                        "Other",
+                                        "Android",
+                                        "IOS"
+                                        ],
+                                    datasets: [{
+                                        data: [15, 20, 30, 10, 30],
+                                        backgroundColor: [
+                                            "#BDC3C7",
+                                            "#9B59B6",
+                                            "#E74C3C",
+                                            "#26B99A",
+                                            "#3498DB"
+                                        ],
+                                        hoverBackgroundColor: [
+                                            "#CFD4D8",
+                                            "#B370CF",
+                                            "#E95E4F",
+                                            "#36CAAB",
+                                            "#49A9EA"
+                                        ]
+                                    }]
+                                },
+                                options: {
+                                    legend: false,
+                                    responsive: false
+                                }
+                            };
+
+                            $('#canvasDoughnut-{{$Selector.Id}}').each(function(){
+
+                                var chart_element = $(this);
+                                var chart_doughnut = new Chart( chart_element, chart_doughnut_settings);
+
+                            });
+
+                        }
+
+                    </script>
+                </div>
+            {{end}}
+
+            {{if eq $Selector.TemplateType 2}}
+                <div class="row">
+                    <div class="col-md-12 col-sm-4 col-xs-12">
+                        <div class="x_panel tile fixed_height_300">
+                            <div class="x_content">
+                                <h4>{{$Selector.Title}}</h4>
+                                {{range $Oindex,$Option:=$Selector.Option}}
+                                    <div class="widget_summary">
+                                        <div class="w_left w_25">
+                                            <span>{{$Option.Title}}</span>
+                                        </div>
+                                        <div class="w_center w_55">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="{{$Option.Id}}0" aria-valuemin="0" aria-valuemax="100" style="width: {{$Option.Id}}%;">
+                                                    <span class="sr-only">{{$Option.Id}}% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w_right w_20">
+                                            <span>{{$Option.Id}}</span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{end}}
+
+            {{if eq $Selector.TemplateType 3}}
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel tile fixed_height_300">
+                            <div class="x_content">
+                                <div class="demo-container" style="height:280px">
+                                    <div id="chart_plot_{{$Selector.Id}}" class="demo-placeholder" style="padding: 0px; position: relative;"><canvas class="flot-base" width="1646" height="560" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 823px; height: 280px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 57px; text-align: center;">10/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 134px; text-align: center;">12/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 211px; text-align: center;">14/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 288px; text-align: center;">16/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 365px; text-align: center;">18/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 442px; text-align: center;">20/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 519px; text-align: center;">22/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 596px; text-align: center;">24/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 672px; text-align: center;">26/04/19</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 68px; top: 263px; left: 749px; text-align: center;">28/04/19</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 245px; left: 13px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 204px; left: 7px; text-align: right;">20</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 163px; left: 7px; text-align: right;">40</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 123px; left: 7px; text-align: right;">60</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 82px; left: 7px; text-align: right;">80</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 41px; left: 0px; text-align: right;">100</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 0px; text-align: right;">120</div></div></div><canvas class="flot-overlay" width="1646" height="560" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 823px; height: 280px;"></canvas><div class="legend"><div style="position: absolute; width: 77px; height: 17px; top: -16px; right: 24px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:-16px;right:24px;;font-size:smaller;color:#3f3f3f"><tbody><tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(150,202,89);overflow:hidden"></div></div></td><td class="legendLabel">Email Sent&nbsp;&nbsp;</td></tr></tbody></table></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        var chart_plot_02_data =[
+                            ['2019/04/09',100],
+                            ['2019/04/10',10],
+                            ['2019/04/11',1000],
+                            ['2019/04/12',200],
+                            ['2019/04/13',300],
+                            ['2019/04/14',700],
+                        ];
+
+                        var chart_plot_02_settings = {
+                            grid: {
+                                show: true,
+                                aboveData: true,
+                                color: "#3f3f3f",
+                                labelMargin: 10,
+                                axisMargin: 0,
+                                borderWidth: 0,
+                                borderColor: null,
+                                minBorderMargin: 5,
+                                clickable: true,
+                                hoverable: true,
+                                autoHighlight: true,
+                                mouseActiveRadius: 100
+                            },
+                            series: {
+                                lines: {
+                                    show: true,
+                                    fill: true,
+                                    lineWidth: 2,
+                                    steps: false
+                                },
+                                points: {
+                                    show: true,
+                                    radius: 4.5,
+                                    symbol: "circle",
+                                    lineWidth: 3.0
+                                }
+                            },
+                            legend: {
+                                position: "ne",
+                                margin: [0, -25],
+                                noColumns: 0,
+                                labelBoxBorderColor: null,
+                                labelFormatter: function(label, series) {
+                                    return label + '&nbsp;&nbsp;';
+                                },
+                                width: 40,
+                                height: 1
+                            },
+                            colors: ['#96CA59', '#3F97EB', '#72c380', '#6f7a8a', '#f7cb38', '#5a8022', '#2c7282'],
+                            shadowSize: 0,
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "%s: %y.0",
+                                xDateFormat: "%d/%m",
+                                shifts: {
+                                    x: -30,
+                                    y: -50
+                                },
+                                defaultTheme: false
+                            },
+                            yaxis: {
+                                min: 0
+                            },
+                            xaxis: {
+                                mode: "time",
+                                minTickSize: [1, "day"],
+                                timeformat: "%d/%m/%y",
+                                min: chart_plot_02_data[0][0],
+                                max: chart_plot_02_data[20][0]
+                            }
+                        };
+                        if ($("#chart_plot_{{$Selector.Id}}").length){
+
+                            $.plot( $("#chart_plot_{{$Selector.Id}}"),
+                                [{
+                                    label: "Email Sent",
+                                    data: chart_plot_02_data,
+                                    lines: {
+                                        fillColor: "rgba(150, 202, 89, 0.12)"
+                                    },
+                                    points: {
+                                        fillColor: "#fff" }
+                                }], chart_plot_02_settings);
+
+                        }
+                    </script>
+                </div>
+            {{end}}
+            {{if eq $Selector.TemplateType 4}}
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_content ">
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    {{range $Oindex,$Option:=$Selector.Option}}
+                                        <th>{{$Option.Title}}</th>
+                                    {{end}}
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    {{range $Oindex,$Option:=$Selector.Option}}
+                                        <td>{{$Option.Id}}</td>
+                                    {{end}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {{end}}
+        {{end}}
+    </div>
+</div>
+
+
