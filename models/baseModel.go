@@ -191,6 +191,6 @@ func Paginator(page, limit int, nums int64) map[string]interface{} {
 func Qrcode( url string) string {
 	png,_ := qrcode.Encode(url, qrcode.Medium, 256)
 	imageBase64 := base64.StdEncoding.EncodeToString(png)
-	//return imageBase64
+
 	return imageBase64
 }

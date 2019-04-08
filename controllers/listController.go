@@ -78,3 +78,7 @@ func (this *ListController) Publish() {
 	this.Layout = ""
 	this.TplName = "publish.html"
 }
+
+func (this *ListController) Report() {
+
+}
