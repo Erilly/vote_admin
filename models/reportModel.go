@@ -1,6 +1,9 @@
 package models
 
 import (
+	"encoding/json"
+	"gopkg.in/mgo.v2/bson"
+	"strconv"
 	"time"
 )
 
@@ -23,6 +26,10 @@ type Select struct {
 	Page int16
 	Ctime time.Time
 	Mtime time.Time
+	Lables string
+	Color string
+	Data string
+	Totle int
 	Option []*Opt
 }
 
@@ -31,11 +38,25 @@ type Opt struct {
 	Title string
 	Pid int
 	Status int8
+	Count int
+	Color string
 	Ctime time.Time
 	Mtime time.Time
-	Lables string
-	Data string
 }
+var color = []string{
+	"#ff0000",
+	"#26B99A",
+	"#337ab7",
+	"#f3a746",
+	"#E76359",
+	"#60b0ce",
+	"#810082",
+	"#7b1f36",
+	"#E74C3C",
+	"#3498DB",
+	"#761f36",
+	"#9B59B6",
+	"#BDC3C7"}
 
 func GetReport(question Question)(*Quest){
 
@@ -52,6 +73,8 @@ func GetReport(question Question)(*Quest){
 	Quest.Mtime = question.Mtime
 
 	for _,selector := range question.Selector{
+		var lables []string
+		var data []int
 
 		Select:=new(Select)
 		Select.Id = selector.Id
@@ -61,7 +84,7 @@ func GetReport(question Question)(*Quest){
 		Select.Ctime = selector.Ctime
 		Select.Mtime = selector.Mtime
 
-		for _,option:=range selector.Option{
+		for k,option:=range selector.Option{
 			Opt:=new(Opt)
 			Opt.Id = option.Id
 			Opt.Title = option.Title
@@ -69,11 +92,51 @@ func GetReport(question Question)(*Quest){
 			Opt.Status = option.Status
 			Opt.Ctime = option.Ctime
 			Opt.Mtime = option.Mtime
-			Opt.Lables = ""
-			Opt.Data = ""
+
+			switch selector.TemplateType{
+				case SINGLE_SELECTOTR:
+					lables=append(lables,option.Title)
+
+					count,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
+						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):strconv.Itoa(option.Id)}).Count()
+
+					Opt.Count = count
+					Opt.Color = color[k]
+
+					data=append(data,count)
+
+				case MULTI_SELECTOTR:
+					count,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
+						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):strconv.Itoa(option.Id)}).Count()
+
+					Opt.Count = count
+					data=append(data,count)
+
+				case SCORE_SELECTOTR:
+
+				case FILL_SELECTOTR:
+
+			}
 
 			Select.Option = append( Select.Option, Opt )
 		}
+
+		l,_:=json.Marshal(lables)
+		Select.Lables = string(l)
+
+		var b int
+		for _,value := range data{
+			b += value
+		}
+		if b >0 {
+			Select.Totle = b
+		}
+
+		d,_:=json.Marshal(data)
+		Select.Data = string(d)
+
+		c,_:=json.Marshal(color)
+		Select.Color = string(c)
 
 		Quest.Selector = append(Quest.Selector, Select)
 	}
