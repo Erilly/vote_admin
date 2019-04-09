@@ -81,7 +81,8 @@ func (this *ListController) Publish() {
 
 func (this *ListController) Report() {
 	question_id,_:=strconv.Atoi(this.Ctx.Input.Param("0"))
-	question:=models.GetQuestionInfo(question_id)
+	quest:=models.GetQuestionInfo(question_id)
+	question:=models.GetReport(quest)
 
 	this.Data["question"] =question
 	this.TplName = "admin/vote/record.html"
