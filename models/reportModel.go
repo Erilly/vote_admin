@@ -5,6 +5,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
 	"time"
+	"fmt"
 )
 
 type Quest struct {
@@ -29,6 +30,7 @@ type Select struct {
 	Lables string
 	Color string
 	Data string
+	Sum string
 	Totle int
 	Option []*Opt
 }
@@ -75,6 +77,12 @@ func GetReport(question Question)(*Quest){
 	for _,selector := range question.Selector{
 		var lables []string
 		var data []int
+		var sum []int
+		var start1 []int
+		var start2 []int
+		var start3 []int
+		var start4 []int
+		var start5 []int
 
 		Select:=new(Select)
 		Select.Id = selector.Id
@@ -98,7 +106,7 @@ func GetReport(question Question)(*Quest){
 					lables=append(lables,option.Title)
 
 					count,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
-						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):strconv.Itoa(option.Id)}).Count()
+						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):strconv.Itoa(option.Id)}).Count()
 
 					Opt.Count = count
 					Opt.Color = color[k]
@@ -106,23 +114,49 @@ func GetReport(question Question)(*Quest){
 					data=append(data,count)
 
 				case MULTI_SELECTOTR:
+
 					count,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
-						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):strconv.Itoa(option.Id)}).Count()
+						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):strconv.Itoa(option.Id)}).Count()
 
 					Opt.Count = count
 					data=append(data,count)
 
 				case SCORE_SELECTOTR:
+					lables=append(lables,option.Title)
+					count1,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
+						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"1"}}).Count()
 
-				case FILL_SELECTOTR:
+					start1=append(start1,count1)
+
+					count2,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
+						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"2"}}).Count()
+
+					start2=append(start2,count2)
+
+					count3,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
+						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"3"}}).Count()
+
+					start3=append(start3,count3)
+
+					count4,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
+						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"4"}}).Count()
+
+					start4=append(start4,count4)
+
+					count5,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
+						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"5"}}).Count()
+
+					start5=append(start5,count5)
+
+					Opt.Count = count1 + count2*2 + count3*3 + count4*4 + count5*5
+					sum=append(sum,Opt.Count)
+
+			case FILL_SELECTOTR:
 
 			}
 
 			Select.Option = append( Select.Option, Opt )
 		}
-
-		l,_:=json.Marshal(lables)
-		Select.Lables = string(l)
 
 		var b int
 		for _,value := range data{
@@ -132,8 +166,28 @@ func GetReport(question Question)(*Quest){
 			Select.Totle = b
 		}
 
-		d,_:=json.Marshal(data)
-		Select.Data = string(d)
+		l,_:=json.Marshal(lables)
+		Select.Lables = string(l)
+
+		if selector.TemplateType == SCORE_SELECTOTR {
+			s,_:=json.Marshal(sum)
+			Select.Sum = string(s)
+
+			score:=  make(map[string][]int)
+
+			score["start1"] = start1
+			score["start2"] = start2
+			score["start3"] = start3
+			score["start4"] = start4
+			score["start5"] = start5
+			fmt.Println(score)
+			d,_:=json.Marshal(score)
+			Select.Data = string(d)
+
+		}else{
+			d,_:=json.Marshal(data)
+			Select.Data = string(d)
+		}
 
 		c,_:=json.Marshal(color)
 		Select.Color = string(c)
