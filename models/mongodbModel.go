@@ -34,6 +34,8 @@ func init(){
 	}
 	session.SetMode(mgo.Monotonic, true)
 	database = session.DB(DATABASE)//使用数据库
+	//mgo.SetDebug(true)  // 设置DEBUG模式
+	//mgo.SetLogger(new(MongoLog)) // 设置日志.
 }
 func GetMgo() *mgo.Session {
 	return session
@@ -41,3 +43,12 @@ func GetMgo() *mgo.Session {
 func GetDatabase() *mgo.Database {
 	return database
 }
+
+// 实现 mongo.Logger 的接口
+//type MongoLog struct {
+//}
+//
+//func (MongoLog)Output(calldepth int, s string) error {
+//	log.SetFlags(log.Lshortfile)
+//	return log.Output(calldepth,s)
+//}

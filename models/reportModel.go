@@ -5,7 +5,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
 	"time"
-	"fmt"
 )
 
 type Quest struct {
@@ -45,6 +44,14 @@ type Opt struct {
 	Ctime time.Time
 	Mtime time.Time
 }
+
+type FillData struct {
+	Pagers string
+	Data []interface{}
+}
+
+var paginatorMap map[string]interface{}
+
 var color = []string{
 	"#ff0000",
 	"#26B99A",
@@ -124,35 +131,34 @@ func GetReport(question Question)(*Quest){
 				case SCORE_SELECTOTR:
 					lables=append(lables,option.Title)
 					count1,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
-						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"1"}}).Count()
+						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):bson.M{"opt_"+strconv.Itoa(option.Id):"1"}}).Count()
 
 					start1=append(start1,count1)
 
 					count2,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
-						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"2"}}).Count()
+						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):bson.M{"opt_"+strconv.Itoa(option.Id):"2"}}).Count()
 
 					start2=append(start2,count2)
 
 					count3,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
-						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"3"}}).Count()
+						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):bson.M{"opt_"+strconv.Itoa(option.Id):"3"}}).Count()
 
 					start3=append(start3,count3)
 
 					count4,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
-						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"4"}}).Count()
+						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):bson.M{"opt_"+strconv.Itoa(option.Id):"4"}}).Count()
 
 					start4=append(start4,count4)
 
 					count5,_:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).Find(
-						&bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):&bson.M{"opt_"+strconv.Itoa(option.Id):"5"}}).Count()
+						bson.M{"question_id": question.Id,"selector_"+strconv.Itoa(selector.Id):bson.M{"opt_"+strconv.Itoa(option.Id):"5"}}).Count()
 
 					start5=append(start5,count5)
 
 					Opt.Count = count1 + count2*2 + count3*3 + count4*4 + count5*5
 					sum=append(sum,Opt.Count)
 
-			case FILL_SELECTOTR:
-
+				case FILL_SELECTOTR:
 			}
 
 			Select.Option = append( Select.Option, Opt )
@@ -170,23 +176,31 @@ func GetReport(question Question)(*Quest){
 		Select.Lables = string(l)
 
 		if selector.TemplateType == SCORE_SELECTOTR {
-			s,_:=json.Marshal(sum)
+			s, _ := json.Marshal(sum)
 			Select.Sum = string(s)
 
-			score:=  make(map[string][]int)
+			score := make(map[string][]int)
 
 			score["start1"] = start1
 			score["start2"] = start2
 			score["start3"] = start3
 			score["start4"] = start4
 			score["start5"] = start5
-			fmt.Println(score)
-			d,_:=json.Marshal(score)
+
+			d, _ := json.Marshal(score)
+			Select.Data = string(d)
+
+		}else if selector.TemplateType == FILL_SELECTOTR {
+			result := FillReport(question.Id,Select.Id,1,1)
+
+			d,_:=json.Marshal(result)
 			Select.Data = string(d)
 
 		}else{
+
 			d,_:=json.Marshal(data)
 			Select.Data = string(d)
+
 		}
 
 		c,_:=json.Marshal(color)
@@ -196,4 +210,33 @@ func GetReport(question Question)(*Quest){
 	}
 
 	return Quest
+}
+
+func FillReport(qid,sid,limit,page int) *FillData {
+	var result []interface{}
+
+	if limit < 1{
+		limit = 10
+	}
+
+	if page < 1{
+		page =1
+	}
+
+	offset:=(page-1)*limit
+
+	sql:=GetDatabase().C(MONGO_COLLECTION_VOTE_LOG).
+		Find(bson.M{"question_id": qid}).
+		Select(bson.M{"selector_"+strconv.Itoa(sid):1})
+
+	total,_:=sql.Count()
+	sql.Limit(limit).Skip(offset).All(&result)
+
+	pagerMap:=Paginator(page,limit,int64(total))
+
+	FillData:=new(FillData)
+	FillData.Pagers = FormatePagerHtml(pagerMap,sid)
+	FillData.Data = result
+
+	return FillData
 }

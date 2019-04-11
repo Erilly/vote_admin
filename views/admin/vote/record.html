@@ -224,20 +224,43 @@
                                     </tr>
                                     </thead>
 
-                                    <tbody>
-                                    <tr>
-                                        {{range $Oindex,$Option:=$Selector.Option}}
-                                            <td>{{$Option.Id}}</td>
-                                        {{end}}
+                                    <tbody id="optcontainer-{{$Selector.Id}}">
+
                                     </tbody>
                                 </table>
+                                <div id="pagers-{{$Selector.Id}}"></div>
                             </div>
                         </div>
                     </div>
+                    <script>
+                        $(function() {
+                            var trstart = '<tr>';
+                            var trend = '</tr>';
+                            var tdstart = '<td>';
+                            var tdend = '</td>';
+                            var sid = "selector_{{$Selector.Id}}"
+                            var template =''
+
+                            if ($('#optcontainer-{{$Selector.Id}}').length) {
+                                var opt_data = JSON.parse({{$Selector.Data}});
+                                for (var i in opt_data.Data) {
+                                    var dat = opt_data.Data[i][sid]
+                                    template += trstart + "\n"
+                                    for (var j in dat){
+                                        for(var key in dat[j]){
+                                            template+=tdstart+dat[j][key]+tdend+"\n"
+                                        }
+                                    }
+                                    template += trend+"\n"
+                                }
+                                $('#optcontainer-{{$Selector.Id}}').html(template)
+                                $('#pagers-{{$Selector.Id}}').html(opt_data.Pagers)
+                            }
+                        });
+                    </script>
                 </div>
             {{end}}
         {{end}}
     </div>
 </div>
-
 

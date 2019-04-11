@@ -188,6 +188,76 @@ func Paginator(page, limit int, nums int64) map[string]interface{} {
 	return paginatorMap
 }
 
+func FormatePagerHtml(papaginatorMapge map[string]interface{}, selector_id int) string {
+	var temp interface{}
+
+	var pages []int
+	var totalpages int
+	var firstpage int
+	var lastpage int
+	var page int
+	var nums int64
+
+	temp = paginatorMap["pages"]
+	pages = temp.([]int)
+
+	temp = paginatorMap["totalpages"]
+	totalpages = temp.(int)
+
+	temp = paginatorMap["firstpage"]
+	firstpage = temp.(int)
+
+	temp = paginatorMap["lastpage"]
+	lastpage = temp.(int)
+
+	temp = paginatorMap["currpage"]
+	page = temp.(int)
+
+	temp = paginatorMap["totals"]
+	nums = temp.(int64)
+
+	//var html string
+	html := "<div class=\"col-sm-6\" style=\"margin-top:30px;\">\n<div class=\"dataTables_info\" id=\"datatable_info\" role=\"status\" aria-live=\"polite\">\n共"
+	html += strconv.Itoa(int(nums)) + "条 共" + strconv.Itoa(totalpages) + "页 当前第" + strconv.Itoa(totalpages) + "页"
+	html += "</div>\n</div>\n"
+	html += "<div class=\"col-sm-6\">"
+	html += "<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatable-responsive_paginate\">\n"
+	html += "<ul class=\"pagination\">"
+	if firstpage == page {
+
+		html += "<li class = \"paginate_button previous disabled\" id=\"datatable-responsive_previous\" >\n"
+		html += "<a href = \"javascript:void(0);\" aria-controls=\"datatable-responsive\"> 上一页 </a >\n"
+		html += "</li>"
+	} else {
+		html += "<li class=\"paginate_button previous\" id=\"datatable-responsive_previous\" >"
+		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\"  onclick=\"pagerSlice("+strconv.Itoa(firstpage)+","+strconv.Itoa(selector_id)+")\"> 上一页 </a>\n"
+		html += "</li>"
+	}
+	for _, pd := range pages {
+
+		html += "<li class=\"paginate_button"
+		if page == pd {
+			html += " active"
+		}
+		html += "\">\n"
+		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\">"+ strconv.Itoa(pd) + "</a>\n"
+		html += "</li>\n"
+	}
+
+	if lastpage <= totalpages {
+		html += "<li class=\"paginate_button next\" id=\"datatable-responsive_next\">\n"
+		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\" onclick=\"pagerSlice("+strconv.Itoa(lastpage)+","+strconv.Itoa(selector_id)+")\">下一页</a>\n"
+		html += "</li>"
+	}else {
+		html += "<li class=\"paginate_button next disabled\" id=\"datatable-responsive_next\">"
+		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\">下一页</a>"
+		html += "</li>\n"
+	}
+	html += "</ul>\n</div>\n</div>\n"
+
+	return html
+}
+
 func Qrcode( url string) string {
 	png,_ := qrcode.Encode(url, qrcode.Medium, 256)
 	imageBase64 := base64.StdEncoding.EncodeToString(png)
