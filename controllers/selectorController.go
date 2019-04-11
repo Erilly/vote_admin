@@ -1,13 +1,12 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"strconv"
 	"vote_admin/models"
 )
 
 type SelectorController struct {
-	beego.Controller
+	BaseController
 }
 
 func (this *SelectorController) Post() {
