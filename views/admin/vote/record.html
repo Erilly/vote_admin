@@ -263,4 +263,49 @@
         {{end}}
     </div>
 </div>
+<script>
+    /**
+     * 分页
+     * @param _type
+     * @returns {boolean}
+     */
+    function pagerSlice(page,question_id,selector_id) {
+        var _reqUrl = "/report/filllist";
+        $.ajax({
+            url:_reqUrl,
+            dataType:"json",
+            type:"get",
+            async:"false",
+            data:{question_id:question_id,selector_id:selector_id,page:page},
+            success:function (jsondata) {
+                if(jsondata.Code==0) {
+                    var trstart = '<tr>';
+                    var trend = '</tr>';
+                    var tdstart = '<td>';
+                    var tdend = '</td>';
+                    var sid = "selector_"+selector_id
+                    var template =''
+
+                    if ($('#optcontainer-'+selector_id).length) {
+                        var opt_data = jsondata.Content;
+                        for (var i in opt_data.Data) {
+                            var dat = opt_data.Data[i][sid]
+                            template += trstart + "\n"
+                            for (var j in dat){
+                                for(var key in dat[j]){
+                                    template+=tdstart+dat[j][key]+tdend+"\n"
+                                }
+                            }
+                            template += trend+"\n"
+                        }
+                        $('#optcontainer-'+selector_id).html(template)
+                        $('#pagers-'+selector_id).html(opt_data.Pagers)
+                    }
+                }else{
+                    alert(jsondata.Msg)
+                }
+            }
+        });
+    }
+</script>
 

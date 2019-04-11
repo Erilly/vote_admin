@@ -191,7 +191,7 @@ func GetReport(question Question)(*Quest){
 			Select.Data = string(d)
 
 		}else if selector.TemplateType == FILL_SELECTOTR {
-			result := FillReport(question.Id,Select.Id,1,1)
+			result := FillReport(question.Id,Select.Id,5,1)
 
 			d,_:=json.Marshal(result)
 			Select.Data = string(d)
@@ -235,7 +235,7 @@ func FillReport(qid,sid,limit,page int) *FillData {
 	pagerMap:=Paginator(page,limit,int64(total))
 
 	FillData:=new(FillData)
-	FillData.Pagers = FormatePagerHtml(pagerMap,sid)
+	FillData.Pagers = FormatePagerHtml(pagerMap,qid,sid)
 	FillData.Data = result
 
 	return FillData

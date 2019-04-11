@@ -188,33 +188,24 @@ func Paginator(page, limit int, nums int64) map[string]interface{} {
 	return paginatorMap
 }
 
-func FormatePagerHtml(papaginatorMapge map[string]interface{}, selector_id int) string {
-	var temp interface{}
-
-	var pages []int
-	var totalpages int
-	var firstpage int
-	var lastpage int
-	var page int
-	var nums int64
-
-	temp = paginatorMap["pages"]
-	pages = temp.([]int)
+func FormatePagerHtml(paginatorMap map[string]interface{}, question_id,selector_id int) string {
+	temp := paginatorMap["pages"]
+	pages := temp.([]int)
 
 	temp = paginatorMap["totalpages"]
-	totalpages = temp.(int)
+	totalpages := temp.(int)
 
 	temp = paginatorMap["firstpage"]
-	firstpage = temp.(int)
+	firstpage := temp.(int)
 
 	temp = paginatorMap["lastpage"]
-	lastpage = temp.(int)
+	lastpage := temp.(int)
 
 	temp = paginatorMap["currpage"]
-	page = temp.(int)
+	page := temp.(int)
 
 	temp = paginatorMap["totals"]
-	nums = temp.(int64)
+	nums := temp.(int64)
 
 	//var html string
 	html := "<div class=\"col-sm-6\" style=\"margin-top:30px;\">\n<div class=\"dataTables_info\" id=\"datatable_info\" role=\"status\" aria-live=\"polite\">\n共"
@@ -230,7 +221,7 @@ func FormatePagerHtml(papaginatorMapge map[string]interface{}, selector_id int) 
 		html += "</li>"
 	} else {
 		html += "<li class=\"paginate_button previous\" id=\"datatable-responsive_previous\" >"
-		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\"  onclick=\"pagerSlice("+strconv.Itoa(firstpage)+","+strconv.Itoa(selector_id)+")\"> 上一页 </a>\n"
+		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\"  onclick=\"pagerSlice("+strconv.Itoa(firstpage)+","+strconv.Itoa(question_id)+","+strconv.Itoa(selector_id)+")\"> 上一页 </a>\n"
 		html += "</li>"
 	}
 	for _, pd := range pages {
@@ -240,13 +231,18 @@ func FormatePagerHtml(papaginatorMapge map[string]interface{}, selector_id int) 
 			html += " active"
 		}
 		html += "\">\n"
-		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\">"+ strconv.Itoa(pd) + "</a>\n"
+		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\""
+		if page != pd {
+
+			html += " onclick=\"pagerSlice(" + strconv.Itoa(pd) + "," + strconv.Itoa(question_id) + "," + strconv.Itoa(selector_id) + ")\""
+		}
+		html += " >"+ strconv.Itoa(pd) + "</a>\n"
 		html += "</li>\n"
 	}
 
 	if lastpage <= totalpages {
 		html += "<li class=\"paginate_button next\" id=\"datatable-responsive_next\">\n"
-		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\" onclick=\"pagerSlice("+strconv.Itoa(lastpage)+","+strconv.Itoa(selector_id)+")\">下一页</a>\n"
+		html += "<a href=\"javascript:void(0);\" aria-controls=\"datatable-responsive\" onclick=\"pagerSlice("+strconv.Itoa(lastpage)+","+strconv.Itoa(question_id)+","+strconv.Itoa(selector_id)+")\">下一页</a>\n"
 		html += "</li>"
 	}else {
 		html += "<li class=\"paginate_button next disabled\" id=\"datatable-responsive_next\">"
