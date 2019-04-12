@@ -27,14 +27,22 @@ func (this *IndexController) Get() {
 	}
 	if cv==false {
 		qid, _ := strconv.Atoi(question_id)
-		var questionInfo models.Question
 
-		models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Find(bson.M{"id": qid}).One(&questionInfo)
+		qs:=models.GetDatabase().C(models.MONGO_COLLECTION_QUESTION).Find(bson.M{"id": qid})
 
-		this.Data["question"] = questionInfo
-		this.Data["isshow"] = true
+		if num,_:=qs.Count();num<1{
+			this.Data["warning"] = "该问卷不存在！"
+			this.TplName = "warning.html"
+		}else{
+			var questionInfo models.Question
+			qs.One(&questionInfo)
 
-		this.TplName = "index.html"
+			this.Data["question"] = questionInfo
+			this.Data["isshow"] = true
+
+			this.TplName = "index.html"
+		}
+
 	}else{
 		this.Data["warning"] = "您已提交该问卷，感谢您的参与！"
 		this.TplName = "warning.html"

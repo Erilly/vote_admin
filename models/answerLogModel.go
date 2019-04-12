@@ -15,3 +15,10 @@ func AddAnswerLog(question_id int,content string) (int,error){
 
 	return int(id),err
 }
+
+func AnserLogCount(question_id int)(int){
+	o := orm.NewOrm()
+	count,_:=o.QueryTable(AnswerLog{}).Filter("QuestionId",question_id).Count()
+
+	return int(count)
+}

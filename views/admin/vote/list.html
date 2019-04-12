@@ -60,12 +60,14 @@
                                         <span style="color:limegreen">已发布</span>
                                     {{end}}
                                 </td>
-                                <td>{{.PublishStatus}}</td>
+                                <td>{{anwercount .Id}}</td>
                                 <td>{{.Mtime}}</td>
                                 <td>
                                     <a href="/list/edit/{{.Id}}">编辑</a>
                                     <a href="/list/publish/{{.Id}}">发布</a>
-                                    <a href="/report?question_id={{.Id}}">统计</a>
+                                    {{if eq .PublishStatus 1}}
+                                        <a href="/report/get/{{.Id}}">统计</a>
+                                    {{end}}
                                 </td>
                             {{end}}
                             </tbody>

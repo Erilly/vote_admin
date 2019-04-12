@@ -16,15 +16,18 @@ func init(){
 
 func main() {
 	//是否开启ORM调试
-	orm.Debug = true
+	orm.Debug = false
 	//自动建表
 	orm.RunSyncdb("default", false, true)
 
 	//模板中使用{{add $index}}或{{$index|add}}
 	beego.AddFuncMap("add", Indexaddone)
 
-	//模板中使用{{add $index}}或{{$index|add}}
+	//模板中使用{{percent $A $B}}
 	beego.AddFuncMap("percent", Percent)
+
+	//模板中使用{{anwerCount question_d}}
+	beego.AddFuncMap("anwercount", AnwerCount)
 
 	beego.Run()
 }
@@ -45,4 +48,9 @@ func Percent(a,b int) (string) {
 		return value
 	}
 	return "0"
+}
+
+//获取提交答卷数量
+func AnwerCount(question_id int) int {
+	return models.AnserLogCount(question_id)
 }

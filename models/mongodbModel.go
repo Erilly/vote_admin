@@ -4,15 +4,13 @@ import (
 	"gopkg.in/mgo.v2"
 	"log"
 	"time"
+	"github.com/astaxie/beego"
 )
 
 var session *mgo.Session
 var database *mgo.Database
 
 const (
-	MONGOSERVER = "localhost:27017"//这里使用了默认端口
-	DATABASE = "vote_admin"//填入数据库名字
-
 	MONGO_COLLECTION_QUESTION = "vote_question"
 	MONGO_COLLECTION_VOTE_LOG = "vote_log"
 )
@@ -20,9 +18,9 @@ const (
 func init(){
 	//MongoDB
 	mongoDBDialInfo := &mgo.DialInfo{
-		Addrs:    []string{MONGOSERVER},//这里填数据库地址
+		Addrs:    []string{beego.AppConfig.String("mongo_server")},//这里填数据库地址
 		Timeout:  60 * time.Second,
-		Database: DATABASE,
+		Database: beego.AppConfig.String("mongo_dbname"),
 		PoolLimit: 4096,//
 		//Username: AuthUserName,
 		//Password: AuthPassword,
@@ -33,7 +31,7 @@ func init(){
 		log.Fatalf("CreateSession: %s\n", err)
 	}
 	session.SetMode(mgo.Monotonic, true)
-	database = session.DB(DATABASE)//使用数据库
+	database = session.DB(beego.AppConfig.String("mongo_dbname"))//使用数据库
 	//mgo.SetDebug(true)  // 设置DEBUG模式
 	//mgo.SetLogger(new(MongoLog)) // 设置日志.
 }

@@ -10,7 +10,7 @@ type ReportController struct {
 }
 
 func (this *ReportController) Get() {
-	question_id,_ := strconv.Atoi( this.Input().Get("question_id"))
+	question_id,_:=strconv.Atoi(this.Ctx.Input.Param("0"))
 
 	quest:=models.GetQuestionInfo(question_id)
 	question:=models.GetReport(quest)
