@@ -209,7 +209,7 @@ func FormatePagerHtml(paginatorMap map[string]interface{}, question_id,selector_
 
 	//var html string
 	html := "<div class=\"col-sm-6\" style=\"margin-top:30px;\">\n<div class=\"dataTables_info\" id=\"datatable_info\" role=\"status\" aria-live=\"polite\">\n共"
-	html += strconv.Itoa(int(nums)) + "条 共" + strconv.Itoa(totalpages) + "页 当前第" + strconv.Itoa(totalpages) + "页"
+	html += strconv.Itoa(int(nums)) + "条 共" + strconv.Itoa(totalpages) + "页 当前第" + strconv.Itoa(page) + "页"
 	html += "</div>\n</div>\n"
 	html += "<div class=\"col-sm-6\">"
 	html += "<div class=\"dataTables_paginate paging_simple_numbers\" id=\"datatable-responsive_paginate\">\n"
